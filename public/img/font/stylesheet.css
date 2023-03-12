@@ -1,0 +1,96 @@
+@font-face {
+    font-family: 'Ultima Pro';
+    src: url('UltimaPro-BoldItalic.eot');
+    src: local('Ultima Pro Bold Italic'), local('UltimaPro-BoldItalic'),
+        url('UltimaPro-BoldItalic.eot?#iefix') format('embedded-opentype'),
+        url('UltimaPro-BoldItalic.woff2') format('woff2'),
+        url('UltimaPro-BoldItalic.woff') format('woff'),
+        url('UltimaPro-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ultima Pro';
+    src: url('UltimaPro-Bold.eot');
+    src: local('Ultima Pro Bold'), local('UltimaPro-Bold'),
+        url('UltimaPro-Bold.eot?#iefix') format('embedded-opentype'),
+        url('UltimaPro-Bold.woff2') format('woff2'),
+        url('UltimaPro-Bold.woff') format('woff'),
+        url('UltimaPro-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ultima Pro Lt';
+    src: url('UltimaProLt-Italic.eot');
+    src: local('Ultima Pro Lt Italic'), local('UltimaProLt-Italic'),
+        url('UltimaProLt-Italic.eot?#iefix') format('embedded-opentype'),
+        url('UltimaProLt-Italic.woff2') format('woff2'),
+        url('UltimaProLt-Italic.woff') format('woff'),
+        url('UltimaProLt-Italic.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ultima Pro Lt';
+    src: url('UltimaProLt.eot');
+    src: local('Ultima Pro Lt'), local('UltimaProLt'),
+        url('UltimaProLt.eot?#iefix') format('embedded-opentype'),
+        url('UltimaProLt.woff2') format('woff2'),
+        url('UltimaProLt.woff') format('woff'),
+        url('UltimaProLt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ultima Pro';
+    src: url('UltimaPro-Italic.eot');
+    src: local('Ultima Pro Italic'), local('UltimaPro-Italic'),
+        url('UltimaPro-Italic.eot?#iefix') format('embedded-opentype'),
+        url('UltimaPro-Italic.woff2') format('woff2'),
+        url('UltimaPro-Italic.woff') format('woff'),
+        url('UltimaPro-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Ultima Pro';
+    src: url('UltimaProBlack.eot');
+    src: local('Ultima Pro Black'), local('UltimaProBlack'),
+        url('UltimaProBlack.eot?#iefix') format('embedded-opentype'),
+        url('UltimaProBlack.woff2') format('woff2'),
+        url('UltimaProBlack.woff') format('woff'),
+        url('UltimaProBlack.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ultima Pro';
+    src: url('UltimaPro.eot');
+    src: local('Ultima Pro'), local('UltimaPro'),
+        url('UltimaPro.eot?#iefix') format('embedded-opentype'),
+        url('UltimaPro.woff2') format('woff2'),
+        url('UltimaPro.woff') format('woff'),
+        url('UltimaPro.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ultima Pro';
+    src: url('UltimaProBlack-BlackItalic.eot');
+    src: local('Ultima Pro Black Black Italic'), local('UltimaProBlack-BlackItalic'),
+        url('UltimaProBlack-BlackItalic.eot?#iefix') format('embedded-opentype'),
+        url('UltimaProBlack-BlackItalic.woff2') format('woff2'),
+        url('UltimaProBlack-BlackItalic.woff') format('woff'),
+        url('UltimaProBlack-BlackItalic.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+}
+

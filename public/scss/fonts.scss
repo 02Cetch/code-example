@@ -1,0 +1,5 @@
+@import "mixins/font-face";
+
+@include font-face("Droid Serif", "../fonts/DroidSerifItalic/DroidSerifItalic");
+@include font-face("Proxima Nova", "../fonts/ProximaNova/ProximaNova");
+@include font-face("Proxima Nova", "../fonts/ProximaNovaBold/ProximaNovaBold", 600);

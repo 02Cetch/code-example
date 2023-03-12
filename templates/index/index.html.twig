@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}RuLeak{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.min.css">
+{% endblock %}
+
+{% block body %}
+{% include 'navbar.html.twig' %}
+<section class="s-top">
+    <h1 class="head_title">Блог о технологиях</h1>
+    <div class="description">
+        <h5 class="head_descr">И всем, что с ними связано <span class="typeline" id="typeline"></span></h5>
+    </div>
+</section>
+<section class="s-posts">
+    <div class="default-indent"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="post_item">
+                    <a href="#">
+                        <div class="post_wrapper">
+                            <img src="img/1.png" alt="">
+                            <p class="post_tag"><a href="#">php</a></p>
+                        </div>
+                        <h2 class="post_title"><a href="#">Lorem ipsum dolor</a></h2>
+                        <p class="post_description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit modi aliquam dolorum nostrum quia officiis maxime sint harum.
+                            Dolorum quidem dolorem soluta fugit nostrum voluptatum porro aperiam, quae unde incidunt. Lorem, ipsum dolor sit amet consectetur...
+                        </p>
+                        <p class="post_detail">
+                            <time class="post_time">· 17 авг. 2021 </time>
+                            <span class="post_read_time">· 3 min read  </span>
+                            <span class="post_comments"> · 2 comments</span>
+                        </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="post_item">
+                    <a href="#">
+                        <div class="post_wrapper">
+                            <img src="img/1.png" alt="">
+                            <p class="post_tag"><a href="#">php</a></p>
+                        </div>
+                        <h2 class="post_title"><a href="#">Lorem ipsum dolor</a></h2>
+                        <p class="post_description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit modi aliquam dolorum nostrum quia officiis maxime sint harum.
+                            Dolorum quidem dolorem soluta fugit nostrum voluptatum porro aperiam, quae unde incidunt. Lorem, ipsum dolor sit amet consectetur...
+                        </p>
+                        <p class="post_detail">
+                            <time class="post_time">· 17 авг. 2021 </time>
+                            <span class="post_read_time">· 3 min read  </span>
+                            <span class="post_comments"> · 2 comments</span>
+                        </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="post_item">
+                    <a href="#">
+                        <div class="post_wrapper">
+                            <img src="img/1.png" alt="">
+                            <p class="post_tag"><a href="#">php</a></p>
+                        </div>
+                        <h2 class="post_title"><a href="#">Lorem ipsum dolor</a></h2>
+                        <p class="post_description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit modi aliquam dolorum nostrum quia officiis maxime sint harum.
+                            Dolorum quidem dolorem soluta fugit nostrum voluptatum porro aperiam, quae unde incidunt. Lorem, ipsum dolor sit amet consectetur...
+                        </p>
+                        <p class="post_detail">
+                            <time class="post_time">· 17 авг. 2021 </time>
+                            <span class="post_read_time">· 3 min read  </span>
+                            <span class="post_comments"> · 2 comments</span>
+                        </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6">
+                <div class="post_item">
+                    <a href="#">
+                        <div class="post_wrapper">
+                            <img src="img/1.png" alt="">
+                            <p class="post_tag"><a href="#">php</a></p>
+                        </div>
+                        <h2 class="post_title"><a href="#">Lorem ipsum dolor</a></h2>
+                        <p class="post_description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit modi aliquam dolorum nostrum quia officiis maxime sint harum.
+                            Dolorum quidem dolorem soluta fugit nostrum voluptatum porro aperiam, quae unde incidunt. Lorem, ipsum dolor sit amet consectetur...
+                        </p>
+                        <p class="post_detail">
+                            <time class="post_time">· 17 авг. 2021 </time>
+                            <span class="post_read_time">· 3 min read  </span>
+                            <span class="post_comments"> · 2 comments</span>
+                            <span class="post_author"> · <a href="#">Author</a></span>
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include 'footer.html.twig' %}
+
+<script>
+    function upTo(el, tagName) {
+        tagName = tagName.toLowerCase();
+
+        while (el && el.parentNode) {
+            el = el.parentNode;
+            if (el.tagName && el.tagName.toLowerCase() === tagName) {
+            return el;
+            }
+        }
+
+        return null;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll('.dropdown-toggle').forEach(item => {
+            item.innerHTML += '<span class="caret sub-arrow"></span>';
+        })
+
+        document.querySelector('.navbar-toggler').addEventListener('click', function () {
+            document.querySelector('.animated-icon').classList.toggle('open');
+        });
+
+        document.querySelectorAll('.caret').forEach(item => {
+            item.addEventListener('click', event => {
+            event.preventDefault();
+
+            item.classList.toggle('open');
+
+            let parent = upTo(item, 'a');
+            if (parent) {
+                let sibling = parent.nextElementSibling;
+                if (sibling) {
+                sibling.style.display = sibling.style.display !== 'block' ? 'block' : 'none';
+                }
+            }
+            })
+        })
+        });
+
+</script>
+{% endblock %}
