@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% include 'navbar.html.twig' %}
+<section class="s-posts">
+    <div class="default-indent"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm-6">
+                <div class="post_item">
+                    <a href="#">
+                        <div class="post_wrapper">
+                            <img src="img/1.png" alt="">
+                        </div>
+                        <h2 class="post_title"><a href="#">Lorem ipsum dolor</a></h2>
+                        <p class="post_description">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit modi aliquam dolorum nostrum quia officiis maxime sint harum.
+                            Dolorum quidem dolorem soluta fugit nostrum voluptatum porro aperiam, quae unde incidunt. Lorem, ipsum dolor sit amet consectetur...
+                        </p>
+                        <p class="post_detail">
+                            <time class="post_time">· 17 авг. 2021 </time>
+                            <span class="post_read_time">· 3 min read  </span>
+                            <span class="post_comments"> · 2 comments</span>
+                        </p>
+                    </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}

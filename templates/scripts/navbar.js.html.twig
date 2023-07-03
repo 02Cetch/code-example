@@ -1,0 +1,41 @@
+<script>
+    function upTo(el, tagName) {
+        tagName = tagName.toLowerCase();
+
+        while (el && el.parentNode) {
+            el = el.parentNode;
+            if (el.tagName && el.tagName.toLowerCase() === tagName) {
+            return el;
+            }
+        }
+
+        return null;
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+        document.querySelectorAll('.dropdown-toggle').forEach(item => {
+            item.innerHTML += '<span class="caret sub-arrow"></span>';
+        })
+
+        document.querySelector('.navbar-toggler').addEventListener('click', function () {
+            document.querySelector('.animated-icon').classList.toggle('open');
+        });
+
+        document.querySelectorAll('.caret').forEach(item => {
+            item.addEventListener('click', event => {
+            event.preventDefault();
+
+            item.classList.toggle('open');
+
+            let parent = upTo(item, 'a');
+            if (parent) {
+                let sibling = parent.nextElementSibling;
+                if (sibling) {
+                sibling.style.display = sibling.style.display !== 'block' ? 'block' : 'none';
+                }
+            }
+            })
+        })
+        });
+</script>

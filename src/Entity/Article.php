@@ -23,11 +23,12 @@ class Article
     private ?string $slug = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
-    private ?Image $main_image = null;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?Image $main_image_id = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
-    #[ORM\Column()]
-    private ?Image $cover_image = null;
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?Image $cover_image_id = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
@@ -49,8 +50,8 @@ class Article
 
     public function __construct()
     {
-        $this->main_image_id = new ArrayCollection();
-        $this->cover_image_id = new ArrayCollection();
+        $this->main_image_id = null;
+        $this->cover_image_id = null;
         $this->tags = new ArrayCollection();
     }
 
@@ -144,7 +145,6 @@ class Article
     public function setUpdatedAt(\DateTimeImmutable $updated_at): self
     {
         $this->updated_at = $updated_at;
-
         return $this;
     }
 

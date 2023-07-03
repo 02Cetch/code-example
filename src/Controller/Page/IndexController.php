@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Page;
 
+use App\Service\ArticleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,10 +10,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(): Response
+    public function index(ArticleService $articleService): Response
     {
-        return $this->render('index/index.html.twig', [
+        $articles = $articleService->getLastArticles();
+        return $this->render('pages/index.html.twig', [
             'page_title' => 'RuLeak — блог о технологиях и не только',
+            'articles' => $articles
         ]);
     }
 }
