@@ -232,7 +232,7 @@ section.s {
       flex-direction: column;
       align-items: center;
       color: $light;
-      margin-bottom: 80px;
+      margin-bottom: 40px;
 
       .post_title {
         a {
@@ -255,8 +255,7 @@ section.s {
       }
       .post_detail {
         cursor: context-menu;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        color: darken($light, 5);
+        font-size: 1em;
         display: flex;
         width: 100%;
         justify-content: start;

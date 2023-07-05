@@ -16,7 +16,7 @@ class ArticleFactory
             $article->setSlug($slug);
         } else {
             $slugger = new AsciiSlugger('ru_RU');
-            $article->setSlug($slugger->slug($title) . "_" . uniqid());
+            $article->setSlug($slugger->slug($title)->lower() . "_" . uniqid());
         }
 
         $article->setText($text);
