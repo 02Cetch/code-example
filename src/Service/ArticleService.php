@@ -11,6 +11,11 @@ class ArticleService
 {
     public function __construct(private readonly ArticleRepository $articleRepository) {}
 
+    public function getArticleBySlug(string $slug): Article
+    {
+        return $this->articleRepository->findOneBy(['slug' => $slug]);
+    }
+
     public function getLastArticles($limit = 4): array
     {
         $queryBuilder = $this->articleRepository->createQueryBuilder('a');
@@ -18,20 +23,6 @@ class ArticleService
 
         $query = $queryBuilder->getQuery();
         return $query->getResult();
-    }
-
-    /**
-     * @throws NonUniqueResultException|NoResultException
-     */
-    public function getArticleBySlug(string $slug): Article
-    {
-        $queryBuilder = $this->articleRepository->createQueryBuilder('a');
-        $queryBuilder->where('a.slug = :slug');
-
-        $queryBuilder->setParameter('slug', $slug);
-
-        $query = $queryBuilder->getQuery();
-        return $query->getSingleResult();
     }
 
     public function getArticlesByTagLink(string $tagLink): array

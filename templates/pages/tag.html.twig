@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{% include 'navbar.html.twig' %}
+{{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
+
 <section class="s-posts">
     <div class="default-indent"></div>
     <div class="container">

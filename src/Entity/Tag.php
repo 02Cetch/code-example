@@ -23,6 +23,9 @@ class Tag
     #[ORM\Column(length: 255, unique: true)]
     private ?string $link = null;
 
+    #[ORM\Column(options: ['unsigned' => true, 'default' => 500])]
+    private ?int $weight = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +63,18 @@ class Tag
     public function setLink(string $link): static
     {
         $this->link = $link;
+
+        return $this;
+    }
+
+    public function getWeight(): ?int
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(int $weight): static
+    {
+        $this->weight = $weight;
 
         return $this;
     }

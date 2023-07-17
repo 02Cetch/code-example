@@ -1,7 +1,8 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-{% include 'navbar.html.twig' %}
+{{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
+
 <section class="s-article">
     <img class="article_main_image" src="{{ asset('img/2.png') }}" alt="">
     <h1 class="article_title">{{ article.getTitle }}</h1>
