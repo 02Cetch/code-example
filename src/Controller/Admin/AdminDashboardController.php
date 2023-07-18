@@ -32,7 +32,8 @@ class AdminDashboardController extends AbstractDashboardController
         return [
             MenuItem::linkToCrud('Статьи', 'fas fa-list', Article::class),
             MenuItem::linkToCrud('Теги', 'fas fa-tag', Tag::class),
-            MenuItem::linkToCrud('Пользователи', 'fas fa-user', User::class),
+            MenuItem::linkToCrud('Пользователи', 'fas fa-user', User::class)
+                ->setPermission('ROLE_ADMIN'),
         ];
     }
 }

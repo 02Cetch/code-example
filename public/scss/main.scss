@@ -234,6 +234,11 @@ section.s {
       color: $light;
       margin-bottom: 40px;
 
+      img {
+        width: 400px;
+        height: 400px;
+      }
+
       .post_title {
         a {
           color: $light;
@@ -268,10 +273,15 @@ section.s {
   }
   &-article {
     width: 100%;
-    color: $light;
+    color: $main_color;
+    background: $light;
     display: flex;
     justify-content: center;
     flex-direction: column;
+
+    .article_text {
+      font-size: 18px;
+    }
 
     .article_main_image {
       width: 100%;
@@ -347,4 +357,12 @@ footer {
   }
 }
 
-@import "media" // Всегда в конце
+.global-container{
+  height:100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $main_color;
+}
+
+@import "media"; // Всегда в конце

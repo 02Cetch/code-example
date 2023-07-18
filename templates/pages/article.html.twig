@@ -4,7 +4,12 @@
 {{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
 
 <section class="s-article">
-    <img class="article_main_image" src="{{ asset('img/2.png') }}" alt="">
+    {% if article.getMainImage %}
+        <img class="article_main_image" src="{{ article.getMainImage.getPath }}" alt="{{ article.getTitle }}">
+    {% else %}
+        <img class="article_main_image" src="{{ asset('img/dummy_article_1920.png') }}" alt="{{ article.getTitle }}">
+    {% endif %}
+
     <h1 class="article_title">{{ article.getTitle }}</h1>
 
     <div class="default-indent"></div>

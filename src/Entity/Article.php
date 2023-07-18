@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\File;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -21,14 +22,6 @@ class Article
 
     #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $slug = null;
-
-//    #[ORM\OneToOne(cascade: ['persist'])]
-//    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-//    private ?Image $main_image_id = null;
-
-//    #[ORM\OneToOne(cascade: ['persist'])]
-//    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-//    private ?Image $cover_image_id = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
     private ?Image $main_image = null;
@@ -55,7 +48,11 @@ class Article
     private Collection $tags;
 
     private ?string $main_image_path = null;
+
     private ?string $cover_image_path = null;
+
+    #[ORM\Column]
+    private ?int $min_read = null;
 
     public function __construct()
     {
@@ -219,15 +216,15 @@ class Article
         return $this;
     }
 
-//    public function setCoverImageId(?Image $cover_image_id): self
-//    {
-//        $this->cover_image_id = $cover_image_id;
-//
-//        return $this;
-//    }
-//
-//    public function getCoverImageId(): ?Image
-//    {
-//        return $this->cover_image_id;
-//    }
+    public function getMinRead(): ?int
+    {
+        return $this->min_read;
+    }
+
+    public function setMinRead(int $min_read): static
+    {
+        $this->min_read = $min_read;
+
+        return $this;
+    }
 }
