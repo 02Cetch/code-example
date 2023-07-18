@@ -9,6 +9,8 @@ use Symfony\Component\Validator\Constraints\Unique;
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 class Tag
 {
+    public const DEFAULT_WEIGHT = 500;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -23,7 +25,7 @@ class Tag
     #[ORM\Column(length: 255, unique: true)]
     private ?string $link = null;
 
-    #[ORM\Column(options: ['unsigned' => true, 'default' => 500])]
+    #[ORM\Column(options: ['unsigned' => true, 'default' => self::DEFAULT_WEIGHT])]
     private ?int $weight = null;
 
     public function getId(): ?int
@@ -77,5 +79,10 @@ class Tag
         $this->weight = $weight;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 }

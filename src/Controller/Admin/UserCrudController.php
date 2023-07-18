@@ -20,7 +20,6 @@ use Symfony\Component\Form\FormInterface;
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager,
         private readonly UserFactory $userFactory
     )
     {

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
+use App\Entity\Tag;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -30,6 +31,7 @@ class AdminDashboardController extends AbstractDashboardController
     {
         return [
             MenuItem::linkToCrud('Статьи', 'fas fa-list', Article::class),
+            MenuItem::linkToCrud('Теги', 'fas fa-tag', Tag::class),
             MenuItem::linkToCrud('Пользователи', 'fas fa-user', User::class),
         ];
     }

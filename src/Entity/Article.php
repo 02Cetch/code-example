@@ -22,13 +22,19 @@ class Article
     #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $slug = null;
 
-    #[ORM\OneToOne(cascade: ['persist'])]
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?Image $main_image_id = null;
+//    #[ORM\OneToOne(cascade: ['persist'])]
+//    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+//    private ?Image $main_image_id = null;
+
+//    #[ORM\OneToOne(cascade: ['persist'])]
+//    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+//    private ?Image $cover_image_id = null;
 
     #[ORM\OneToOne(cascade: ['persist'])]
-    #[ORM\Column(type: Types::INTEGER, nullable: true)]
-    private ?Image $cover_image_id = null;
+    private ?Image $main_image = null;
+
+    #[ORM\OneToOne(cascade: ['persist'])]
+    private ?Image $cover_image = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $text = null;
@@ -48,10 +54,11 @@ class Article
     #[ORM\ManyToMany(targetEntity: Tag::class)]
     private Collection $tags;
 
+    private ?string $main_image_path = null;
+    private ?string $cover_image_path = null;
+
     public function __construct()
     {
-        $this->main_image_id = null;
-        $this->cover_image_id = null;
         $this->tags = new ArrayCollection();
     }
 
@@ -84,19 +91,47 @@ class Article
         return $this;
     }
 
-    /**
-     * @return Collection<int, Image>
-     */
-    public function getMainImageId(): Collection
+    public function getMainImagePath(): ?string
     {
-        return $this->main_image_id;
+        return $this->main_image_path;
     }
 
-    public function addMainImageId(Image $mainImageId): self
+    public function setMainImagePath(?string $url): self
     {
-        if (!$this->main_image_id->contains($mainImageId)) {
-            $this->main_image_id->add($mainImageId);
-        }
+        $this->main_image_path = $url;
+        return $this;
+    }
+
+    public function setMainImage(?Image $mainImage): self
+    {
+        $this->main_image = $mainImage;
+
+        return $this;
+    }
+    public function getMainImage(): ?Image
+    {
+        return $this->main_image;
+    }
+
+    public function getCoverImagePath(): ?string
+    {
+        return $this->cover_image_path;
+    }
+
+    public function setCoverImagePath(?string $url): self
+    {
+        $this->cover_image_path = $url;
+        return $this;
+    }
+
+    public function getCoverImage(): ?Image
+    {
+        return $this->cover_image;
+    }
+
+    public function setCoverImage(?Image $coverImage): static
+    {
+        $this->cover_image = $coverImage;
 
         return $this;
     }
@@ -184,22 +219,15 @@ class Article
         return $this;
     }
 
-    public function setMainImageId(?Image $main_image_id): self
-    {
-        $this->main_image_id = $main_image_id;
-
-        return $this;
-    }
-
-    public function setCoverImageId(?Image $cover_image_id): self
-    {
-        $this->cover_image_id = $cover_image_id;
-
-        return $this;
-    }
-
-    public function getCoverImageId(): ?Image
-    {
-        return $this->cover_image_id;
-    }
+//    public function setCoverImageId(?Image $cover_image_id): self
+//    {
+//        $this->cover_image_id = $cover_image_id;
+//
+//        return $this;
+//    }
+//
+//    public function getCoverImageId(): ?Image
+//    {
+//        return $this->cover_image_id;
+//    }
 }

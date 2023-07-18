@@ -19,7 +19,7 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $path = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $host = null;
 
     #[ORM\Column(options: ["default" => false])]
@@ -47,10 +47,9 @@ class Image
         return $this->host;
     }
 
-    public function setHost(string $host): self
+    public function setHost(?string $host): self
     {
         $this->host = $host;
-
         return $this;
     }
 
