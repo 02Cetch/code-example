@@ -34,15 +34,14 @@
           <div class="about_skills">
             <h3 class="about_skills_title">Основные навыки</h3>
             <ul class="about_skills_list">
-              <li>PHP</li>
-              <li>Базы данных</li>
-              <li>Архитектура Back-End приложений</li>
+              {% for skill in user.getUserSkills %}
+                <li>{{ skill.getTitle }}</li>
+              {% endfor %}
             </ul>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </section>
   <section class="s-posts profile-page">
     <div class="default-indent"></div>
@@ -67,25 +66,25 @@
                       </a>
                     {% endfor %}
                   </p>
-                <h2 class="post_title">
-                  <a href="{{ path('article_read', {slug: article.getSlug}) }}">
-                    {{ article.getTitle }}
-                  </a>
-                </h2>
-                <p class="post_description">
-                  {{ article.getTextShort|raw }}
-                </p>
-                <p class="post_detail">
-                  <time class="post_time">
-                    ·{{ article.getCreatedAt|date('H:i d M. Y')}}
-                  </time>
-                  <span class="post_read_time"> · {{ article.getMinRead}} min read</span>
-                  <span class="post_comments"> · 2 comments</span>
-                </p>
+
+                  <h2 class="post_title">
+                    <a href="{{ path('article_read', {slug: article.getSlug}) }}">
+                      {{ article.getTitle }}
+                    </a>
+                  </h2>
+                  <p class="post_description">
+                    {{ article.getTextShort }}...
+                  </p>
+                  <p class="post_detail">
+                    <time class="post_time">
+                      ·{{ article.getCreatedAt|date('H:i d M. Y')}}
+                    </time>
+                    <span class="post_read_time"> · {{ article.getMinRead}} min read</span>
+                    <span class="post_comments"> · 2 comments</span>
+                  </p>
                 </div>
               </a>
             </div>
-          </div>
           </div>
         {% endfor %}
       </div>

@@ -65,8 +65,6 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        $entityInstance->setUser($this->getUser());
-
         if ($entityInstance->getMainImagePath()) {
             $imagePath = $this->getParameter('image_path') . $entityInstance->getMainImagePath();
             $image = (new ImageFactory())->create($imagePath);
@@ -95,6 +93,14 @@ class ArticleCrudController extends AbstractCrudController
             $entityInstance->getSlug(),
             $entityInstance->getTextShort()
         );
+
+        $article->setUser($this->getUser());
+
+        if ($entityInstance->getTags()) {
+            foreach ($entityInstance->getTags() as $tag) {
+                $article->addTag($tag);
+            }
+        }
 
         $estimator = new ReadTimeEstimateHelper($article->getText());
         $article->setMinRead($estimator->getMinutes());

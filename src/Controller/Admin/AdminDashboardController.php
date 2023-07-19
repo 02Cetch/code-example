@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Entity\Tag;
 use App\Entity\User;
+use App\Entity\UserSkill;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -32,6 +33,7 @@ class AdminDashboardController extends AbstractDashboardController
         return [
             MenuItem::linkToCrud('Статьи', 'fas fa-list', Article::class),
             MenuItem::linkToCrud('Теги', 'fas fa-tag', Tag::class),
+            MenuItem::linkToCrud('Навыки', 'fa-solid fa-pen', UserSkill::class),
             MenuItem::linkToCrud('Пользователи', 'fas fa-user', User::class)
                 ->setPermission('ROLE_ADMIN'),
         ];

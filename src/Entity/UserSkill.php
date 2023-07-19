@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints\Unique;
 #[ORM\Entity(repositoryClass: UserSkillRepository::class)]
 class UserSkill
 {
+    public const DEFAULT_WEIGHT = 500;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -22,12 +24,16 @@ class UserSkill
     #[ORM\Column(length: 255)]
     private ?string $title = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'userSkills')]
-    private Collection $user;
+    #[ORM\Column(options: ['unsigned' => true, 'default' => self::DEFAULT_WEIGHT])]
+    private ?int $weight = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'user_skills')]
+    private Collection $users;
 
     public function __construct()
     {
         $this->user = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -59,18 +65,36 @@ class UserSkill
         return $this;
     }
 
+    public function getWeight(): ?int
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(int $weight): static
+    {
+        $this->weight = $weight;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
+    }
+
     /**
      * @return Collection<int, User>
      */
-    public function getUser(): Collection
+    public function getUsers(): Collection
     {
-        return $this->user;
+        return $this->users;
     }
 
     public function addUser(User $user): static
     {
-        if (!$this->user->contains($user)) {
-            $this->user->add($user);
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addUserSkill($this);
         }
 
         return $this;
@@ -78,7 +102,9 @@ class UserSkill
 
     public function removeUser(User $user): static
     {
-        $this->user->removeElement($user);
+        if ($this->users->removeElement($user)) {
+            $user->removeUserSkill($this);
+        }
 
         return $this;
     }

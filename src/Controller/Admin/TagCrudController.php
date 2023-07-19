@@ -29,7 +29,7 @@ class TagCrudController extends AbstractCrudController
                 ->hideWhenCreating(),
             IntegerField::new('weight')
                 ->setRequired(false)
-                ->setFormTypeOption('data', 500)
+                ->setFormTypeOption('data', Tag::DEFAULT_WEIGHT)
                 ->onlyWhenCreating(),
         ];
     }

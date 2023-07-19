@@ -5,11 +5,15 @@ namespace App\Controller\Admin;
 use App\Entity\User;
 use App\Factory\UserFactory;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -48,6 +52,7 @@ class UserCrudController extends AbstractCrudController
         if ($entityInstance->getVirtualRole()) {
             $entityInstance->setRoles([$entityInstance->getVirtualRole()]);
         }
+
         parent::updateEntity($entityManager, $entityInstance);
     }
 
@@ -62,6 +67,7 @@ class UserCrudController extends AbstractCrudController
         if ($role) {
             $entity->setVirtualRole($role);
         }
+
         return parent::createEditForm($entityDto, $formOptions, $context);
     }
 
@@ -78,7 +84,25 @@ class UserCrudController extends AbstractCrudController
             $entityInstance->getPlainPassword(),
             $entityInstance->getVirtualRole()
         );
+
+        if ($entityInstance->getUserSkills()) {
+            foreach ($entityInstance->getUserSkills() as $skill) {
+                $user->addUserSkill($skill);
+            }
+        }
+
         parent::persistEntity($entityManager, $user);
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions->add(Crud::PAGE_INDEX, Action::new('open', 'Открыть')
+            ->linkToRoute('user_view', function (User $user) {
+                return ['nickname' => $user->getNickname()];
+            })
+            ->setHtmlAttributes(['target' => '_blank'])
+        );
+        return $actions;
     }
 
     public function configureFields(string $pageName): iterable
@@ -88,6 +112,11 @@ class UserCrudController extends AbstractCrudController
 
             TextField::new('nickname'),
             EmailField::new('email'),
+
+            TextField::new('job_title', 'Должность'),
+            TextField::new('about_text', 'О себе'),
+
+            AssociationField::new('user_skills', 'Навыки'),
 
             ChoiceField::new('virtual_role', 'Role')->setChoices(User::ALLOWED_ROLES)
                 ->setRequired(true)

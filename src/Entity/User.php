@@ -58,20 +58,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plain_password = null;
     private ?string $virtual_role = null;
 
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Article::class)]
     private Collection $articles;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $job_title = null;
 
-    #[ORM\ManyToMany(targetEntity: UserSkill::class, mappedBy: 'user')]
-    private Collection $userSkills;
+    #[ORM\ManyToMany(targetEntity: UserSkill::class, inversedBy: 'users')]
+    private Collection $user_skills;
 
     public function __construct()
     {
         $this->articles = new ArrayCollection();
-        $this->userSkills = new ArrayCollection();
+        $this->user_skills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -307,14 +306,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserSkills(): Collection
     {
-        return $this->userSkills;
+        return $this->user_skills;
     }
 
     public function addUserSkill(UserSkill $userSkill): static
     {
-        if (!$this->userSkills->contains($userSkill)) {
-            $this->userSkills->add($userSkill);
-            $userSkill->addUser($this);
+        if (!$this->user_skills->contains($userSkill)) {
+            $this->user_skills->add($userSkill);
         }
 
         return $this;
@@ -322,9 +320,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeUserSkill(UserSkill $userSkill): static
     {
-        if ($this->userSkills->removeElement($userSkill)) {
-            $userSkill->removeUser($this);
-        }
+        $this->user_skills->removeElement($userSkill);
 
         return $this;
     }
