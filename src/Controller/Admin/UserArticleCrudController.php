@@ -7,6 +7,9 @@ use App\Factory\ArticleFactory;
 use App\Factory\ImageFactory;
 use App\Helper\ReadTimeEstimateHelper;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
+use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -14,19 +17,21 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\SearchDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Orm\EntityRepository;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-#[IsGranted('ROLE_ADMIN')]
-class ArticleCrudController extends AbstractCrudController
+#[IsGranted('ROLE_WRITER')]
+class UserArticleCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly ArticleFactory $articleFactory
@@ -37,6 +42,46 @@ class ArticleCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Article::class;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $actions->add(Crud::PAGE_INDEX, Action::new('open', 'Открыть')
+            ->linkToRoute('article_read', function (Article $article) {
+                return ['slug' => $article->getSlug()];
+            })
+            ->setHtmlAttributes(['target' => '_blank'])
+        );
+        return $actions;
+    }
+
+    /**
+     * Displays only user's articles
+     */
+    public function createIndexQueryBuilder(
+        SearchDto $searchDto,
+        EntityDto $entityDto,
+        FieldCollection $fields,
+        FilterCollection $filters
+    ): QueryBuilder {
+        /**
+         * @var QueryBuilder $queryBuilder
+         */
+        $queryBuilder = $this->container->get(EntityRepository::class)->createQueryBuilder(
+            $searchDto,
+            $entityDto,
+            $fields,
+            $filters
+        );
+
+        $user = $this->getUser();
+
+        // get generic alias
+        $alias = $queryBuilder->getRootAliases()[0];
+
+        $queryBuilder->join($alias . '.user', 'u');
+        $queryBuilder->andWhere('u.id = '.$user->getId());
+        return $queryBuilder;
     }
 
     /**
@@ -116,6 +161,10 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        if ($entityInstance->getUser()->getId() != $this->getUser()->getId()) {
+            return;
+        }
+
         if ($entityInstance->getMainImagePath()) {
             $imagePath = "{$this->getParameter('image_path')}/{$entityInstance->getMainImagePath()}";
             $image = (new ImageFactory())->create($imagePath);
@@ -147,21 +196,10 @@ class ArticleCrudController extends AbstractCrudController
         parent::updateEntity($entityManager, $entityInstance);
     }
 
-    public function configureActions(Actions $actions): Actions
-    {
-        $actions->add(Crud::PAGE_INDEX, Action::new('open', 'Открыть')
-                ->linkToRoute('article_read', function (Article $article) {
-                    return ['slug' => $article->getSlug()];
-                })
-                ->setHtmlAttributes(['target' => '_blank'])
-            );
-        return $actions;
-    }
-
     public function configureFields(string $pageName): iterable
     {
         return [
-            IntegerField::new('id')->onlyOnIndex(),
+            IdField::new('id')->onlyOnIndex(),
             TextField::new('title'),
 
             ImageField::new('main_image_path', 'Главная картинка')
@@ -179,7 +217,6 @@ class ArticleCrudController extends AbstractCrudController
                 ->onlyOnForms(),
 
             AssociationField::new('tags', 'Tags'),
-            AssociationField::new('user', 'User')->hideWhenCreating(),
 
             TextField::new('slug', 'Слаг статьи (генерируется автоматически, если оставить пустым)')
                 ->hideOnIndex(),
