@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TagRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Unique;
 
@@ -27,6 +29,14 @@ class Tag
 
     #[ORM\Column(options: ['unsigned' => true, 'default' => self::DEFAULT_WEIGHT])]
     private ?int $weight = null;
+
+    #[ORM\ManyToMany(targetEntity: Article::class)]
+    private Collection $articles;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -79,6 +89,11 @@ class Tag
         $this->weight = $weight;
 
         return $this;
+    }
+
+    public function getArticles(): Collection
+    {
+        return $this->articles;
     }
 
     public function __toString(): string

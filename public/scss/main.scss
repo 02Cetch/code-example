@@ -226,6 +226,30 @@ section.s {
   &-posts {
     width: 100%;
 
+    .post_wrapper {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      a {
+        text-align: center;
+        img {
+          width: 400px;
+          height: 400px;
+        }
+      }
+    }
+
+    .posts_title {
+      text-align: center;
+      color: $light;
+      font-size: 45px;
+    }
+
+    .post_description {
+      width: 400px;
+      height: 70px;
+    }
+
     .post_item {
       display: flex;
       justify-content: center;
@@ -234,12 +258,8 @@ section.s {
       color: $light;
       margin-bottom: 40px;
 
-      img {
-        width: 400px;
-        height: 400px;
-      }
-
       .post_title {
+        text-align: center;
         a {
           color: $light;
           &:hover {
@@ -273,15 +293,10 @@ section.s {
   }
   &-article {
     width: 100%;
-    color: $main_color;
-    background: $light;
+    color: $light;
     display: flex;
     justify-content: center;
     flex-direction: column;
-
-    .article_text {
-      font-size: 18px;
-    }
 
     .article_main_image {
       width: 100%;
@@ -300,6 +315,19 @@ section.s {
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-bottom: 60px;
+
+    .about_skills {
+
+      .about_skills_list {
+        list-style-position: inside;
+
+        ::marker {
+          position: absolute !important;
+          right: 0;
+        }
+      }
+    }
     .about_info {
       padding-top: 30px;
       padding-bottom: 30px;
@@ -355,14 +383,6 @@ footer {
       }
     }
   }
-}
-
-.global-container{
-  height:100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: $main_color;
 }
 
 @import "media"; // Всегда в конце

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -55,6 +57,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $plain_password = null;
     private ?string $virtual_role = null;
+
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Article::class)]
+    private Collection $articles;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $job_title = null;
+
+    #[ORM\ManyToMany(targetEntity: UserSkill::class, mappedBy: 'user')]
+    private Collection $userSkills;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+        $this->userSkills = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -209,6 +227,104 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsDeleted(bool $is_deleted): static
     {
         $this->is_deleted = $is_deleted;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Article>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Article $article): static
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Article $article): static
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getUser() === $this) {
+                $article->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array of unique tags
+     */
+    public function getTags(): array
+    {
+        $articles = $this->getArticles();
+
+        $tags = [];
+        $tagIds = [];
+
+        foreach ($articles as $article) {
+            $tags = $article->getTags()->toArray();
+
+            foreach ($tags as $tag) {
+                if (!in_array($tag->getId(), $tagIds)) {
+                    $tags[] = $tag;
+                    $tagIds[] = $tag->getId();
+                }
+            }
+        }
+
+        return $tags;
+    }
+
+    public function getJobTitle(): ?string
+    {
+        return $this->job_title;
+    }
+
+    public function setJobTitle(?string $job_title): static
+    {
+        $this->job_title = $job_title;
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNickname();
+    }
+
+    /**
+     * @return Collection<int, UserSkill>
+     */
+    public function getUserSkills(): Collection
+    {
+        return $this->userSkills;
+    }
+
+    public function addUserSkill(UserSkill $userSkill): static
+    {
+        if (!$this->userSkills->contains($userSkill)) {
+            $this->userSkills->add($userSkill);
+            $userSkill->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserSkill(UserSkill $userSkill): static
+    {
+        if ($this->userSkills->removeElement($userSkill)) {
+            $userSkill->removeUser($this);
+        }
 
         return $this;
     }

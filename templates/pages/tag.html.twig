@@ -30,6 +30,11 @@
                             <time class="post_time">· {{ article.getCreatedAt|date('H:i d M. Y')}} </time>
                             <span class="post_read_time">·  {{ article.getMinRead}} min read  </span>
                             <span class="post_comments"> · 2 comments</span>
+                            <span class="post_author">
+                                · <a href="{{ path('user_view', {nickname: article.getUser.getNickname}) }}">
+                                    {{ article.getUser.getNickname }}
+                                </a>
+                            </span>
                         </p>
                     </a>
                     </div>

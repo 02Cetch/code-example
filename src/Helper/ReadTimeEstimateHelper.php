@@ -2,7 +2,7 @@
 
 namespace App\Helper;
 
-class ReadTimeEstimate
+class ReadTimeEstimateHelper
 {
     const WORDS_PER_MINUTE = 200;
     const STR_MINUTE = 'мин.';

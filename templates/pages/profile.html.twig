@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block chart %}
+  {% include 'scripts/chart.js.html.twig' %}
+{% endblock %}
+
+{% block body %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  {{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
+  <section class="s-about">
+    <div class="container">
+      <div class="row mx-auto text-center">
+        <div class="col-md-12 col-sm-12">
+          <div class="about_info">
+            <div class="avatar_wrap">
+              <img class="about_avatar" src="{{ asset('img/dummy2.png') }}" alt="avatar">
+            </div>
+            <h2 class="about_name">{{ user.getNickname }}</h2>
+            <p class="about_title">{{ user.getJobTitle }}</p>
+            <p class="about_description">{{ user.getAboutText }}</p>
+          </div>
+        </div>
+        <div class="col-md-6 d-block col-sm-12">
+          <div class="about_tags">
+            <h3 class="about_tags_title">Темы статей</h3>
+
+            <div class="about_tags_chart">
+              <canvas id="tagChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 d-block col-sm-12">
+          <div class="about_skills">
+            <h3 class="about_skills_title">Основные навыки</h3>
+            <ul class="about_skills_list">
+              <li>PHP</li>
+              <li>Базы данных</li>
+              <li>Архитектура Back-End приложений</li>
+            </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="s-posts profile-page">
+    <div class="default-indent"></div>
+    <div class="container">
+      <div class="row">
+        <h2 class="posts_title">Список статей</h2>
+        <div class="default-indent"></div>
+        {% for article in user.getArticles %}
+          <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="post_item">
+              <a href="{{ path('article_read', {slug: article.getSlug}) }}">
+                <div class="post_wrapper">
+                  {% if article.getMainImage %}
+                    <img src="{{ article.getMainImage.getPath }}" alt="{{ article.getTitle }}">
+                  {% else %}
+                    <img src="{{ asset('img/dummy_article.png') }}" alt="{{ article.getTitle }}">
+                  {% endif %}
+                  <p class="post_tag">
+                    {% for tag in article.getTags %}
+                      <a href="{{ path('tag_index', {tagLink: tag.getLink}) }}">
+                        {{ tag.getTitle }}
+                      </a>
+                    {% endfor %}
+                  </p>
+                </div>
+                <h2 class="post_title">
+                  <a href="{{ path('article_read', {slug: article.getSlug}) }}">
+                    {{ article.getTitle }}
+                  </a>
+                </h2>
+                <p class="post_description">
+                  {{ article.getTextShort|raw }}
+                </p>
+                <p class="post_detail">
+                  <time class="post_time">
+                    ·{{ article.getCreatedAt|date('H:i d M. Y')}}
+                  </time>
+                  <span class="post_read_time"> · {{ article.getMinRead}} min read</span>
+                  <span class="post_comments"> · 2 comments</span>
+                </p>
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <footer>
+      <div class="social_media">
+        <h3 class="social_link">Social links:</h3>
+
+        <a href="#"><i class="fa fa-linkedin"></i></a>
+        <a href="#"><i class="fa fa-vk"></i></a>
+      </div>
+  </footer>
+
+<script>
+  // Функция для выполнения запроса к API
+  function getData(userId) {
+   var headers = new Headers();
+      headers.append('Accept', 'application/json');
+      fetch(`http://localhost:8055/api/user/tags/${userId}`, {
+          headers: headers
+      })
+      .then(response => response.json())
+      .then(data => {
+          // Обработка полученных данных
+          var chartData = {
+              labels: [],
+              datasets: [{
+                  data: [],
+                  backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
+              }]
+          };
+
+          data.data.forEach(item => {
+              chartData.labels.push(item.title);
+              chartData.datasets[0].data.push(item.quantity);
+          });
+
+          // Настройка параметров графика
+          var chartOptions = {
+              responsive: true,
+              maintainAspectRatio: false
+          };
+
+          // Получение контекста canvas
+          var ctx = document.getElementById('tagChart').getContext('2d');
+
+          // Создание doughnut chart
+          var tagChart = new Chart(ctx, {
+              type: 'doughnut',
+              data: chartData,
+              options: chartOptions
+          });
+      })
+      .catch(error => {
+          console.error('Ошибка получения данных:', error);
+      });
+  }
+
+  // Вызов функции для получения данных и создания графика
+  getData({{ user.getId }});
+</script>
+{% endblock %}
+

@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\File;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 class Article
@@ -53,6 +52,9 @@ class Article
 
     #[ORM\Column]
     private ?int $min_read = null;
+
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?User $user = null;
 
     public function __construct()
     {
@@ -224,6 +226,18 @@ class Article
     public function setMinRead(int $min_read): static
     {
         $this->min_read = $min_read;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

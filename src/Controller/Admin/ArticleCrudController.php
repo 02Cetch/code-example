@@ -5,7 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Factory\ArticleFactory;
 use App\Factory\ImageFactory;
-use App\Helper\ReadTimeEstimate;
+use App\Helper\ReadTimeEstimateHelper;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -52,7 +52,7 @@ class ArticleCrudController extends AbstractCrudController
             $entity->setMainImagePath($entity->getMainImage()->getPath());
         }
 
-        $estimator = new ReadTimeEstimate($entity->getText());
+        $estimator = new ReadTimeEstimateHelper($entity->getText());
         $entity->setMinRead($estimator->getMinutes());
 
         return parent::createEditForm($entityDto, $formOptions, $context);
@@ -65,6 +65,8 @@ class ArticleCrudController extends AbstractCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        $entityInstance->setUser($this->getUser());
+
         if ($entityInstance->getMainImagePath()) {
             $imagePath = $this->getParameter('image_path') . $entityInstance->getMainImagePath();
             $image = (new ImageFactory())->create($imagePath);
@@ -73,6 +75,16 @@ class ArticleCrudController extends AbstractCrudController
             $entityManager->flush();
 
             $entityInstance->setMainImage($image);
+        }
+
+        if ($entityInstance->getCoverImagePath()) {
+            $imagePath = "{$this->getParameter('image_path')}/{$entityInstance->getCoverImagePath()}";
+            $image = (new ImageFactory())->create($imagePath);
+
+            $entityManager->persist($image);
+            $entityManager->flush();
+
+            $entityInstance->setCoverImage($image);
         }
 
         $date = \DateTimeImmutable::createFromFormat('U', time());
@@ -84,7 +96,7 @@ class ArticleCrudController extends AbstractCrudController
             $entityInstance->getTextShort()
         );
 
-        $estimator = new ReadTimeEstimate($article->getText());
+        $estimator = new ReadTimeEstimateHelper($article->getText());
         $article->setMinRead($estimator->getMinutes());
 
         parent::persistEntity($entityManager, $article);
@@ -160,6 +172,8 @@ class ArticleCrudController extends AbstractCrudController
                 ->onlyOnForms(),
 
             AssociationField::new('tags', 'Tags'),
+            AssociationField::new('user', 'User')->hideWhenCreating(),
+
             TextField::new('slug', 'Слаг статьи (генерируется автоматически, если оставить пустым)')
                 ->hideOnIndex(),
 

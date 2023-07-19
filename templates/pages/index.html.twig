@@ -30,14 +30,14 @@
                                            </a>
                                         {% endfor %}
                                     </p>
-                            </div>
+
                             <h2 class="post_title">
                                 <a href="{{ path('article_read', {slug: article.getSlug}) }}">
                                     {{ article.getTitle }}
                                 </a>
                             </h2>
                             <p class="post_description">
-                                {{ article.getTextShort|raw }}
+                                {{ article.getTextShort }}
                             </p>
                             <p class="post_detail">
                                 <time class="post_time">
@@ -45,7 +45,13 @@
                                 </time>
                                 <span class="post_read_time"> · {{ article.getMinRead}} min read</span>
                                 <span class="post_comments"> · 2 comments</span>
+                                <span class="post_author">
+                                    · <a href="{{ path('user_view', {nickname: article.getUser.getNickname}) }}">
+                                        {{ article.getUser.getNickname }}
+                                    </a>
+                                </span>
                             </p>
+                            </div>
                         </a>
                     </div>
                 </div>
