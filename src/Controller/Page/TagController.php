@@ -17,6 +17,7 @@ class TagController extends AbstractController
         $articles = $service->getArticlesByTagLink($tagLink);
         return $this->render('pages/tag.html.twig', [
             'page_title' => "RuLeak | $tagTitle",
+            'tag_title' => $tagTitle,
             'articles' => $articles
         ]);
     }

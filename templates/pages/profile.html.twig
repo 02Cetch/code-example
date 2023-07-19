@@ -67,7 +67,6 @@
                       </a>
                     {% endfor %}
                   </p>
-                </div>
                 <h2 class="post_title">
                   <a href="{{ path('article_read', {slug: article.getSlug}) }}">
                     {{ article.getTitle }}
@@ -83,21 +82,14 @@
                   <span class="post_read_time"> · {{ article.getMinRead}} min read</span>
                   <span class="post_comments"> · 2 comments</span>
                 </p>
+                </div>
               </a>
             </div>
           </div>
+          </div>
         {% endfor %}
       </div>
-    </div>
   </section>
-  <footer>
-      <div class="social_media">
-        <h3 class="social_link">Social links:</h3>
-
-        <a href="#"><i class="fa fa-linkedin"></i></a>
-        <a href="#"><i class="fa fa-vk"></i></a>
-      </div>
-  </footer>
 
 <script>
   // Функция для выполнения запроса к API
