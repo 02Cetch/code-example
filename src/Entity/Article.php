@@ -56,6 +56,12 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $meta_title = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $meta_description = null;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
@@ -238,6 +244,30 @@ class Article
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getMetaTitle(): ?string
+    {
+        return $this->meta_title;
+    }
+
+    public function setMetaTitle(?string $meta_title): static
+    {
+        $this->meta_title = $meta_title;
+
+        return $this;
+    }
+
+    public function getMetaDescription(): ?string
+    {
+        return $this->meta_description;
+    }
+
+    public function setMetaDescription(?string $meta_description): static
+    {
+        $this->meta_description = $meta_description;
 
         return $this;
     }

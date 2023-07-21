@@ -1,0 +1,51 @@
+{% if showPostAuthor is not defined %}
+    {% set showPostAuthor = true %}
+{% endif %}
+
+{% block post %}
+    {% if article is defined %}
+            <div class="col-lg-6 col-md-12 col-sm-12">
+                <div class="post_item">
+                    <a href="{{ path('article_read', {slug: article.getSlug}) }}">
+                        <div class="post_wrapper">
+                            {% if article.getCoverImage %}
+                                <img src="{{ article.getCoverImage.getPath }}" alt="{{ article.getTitle }}">
+                            {% else %}
+                                <img src="{{ asset('img/dummy_article.png') }}" alt="{{ article.getTitle }}">
+                            {% endif %}
+                            <p class="post_tag">
+                                {% for tag in article.getTags %}
+                                    <a href="{{ path('tag_index', {tagLink: tag.getLink}) }}">
+                                        {{ tag.getTitle }}
+                                    </a>
+                                {% endfor %}
+                            </p>
+
+                            <h3 class="post_title">
+                                <a href="{{ path('article_read', {slug: article.getSlug}) }}">
+                                    {{ article.getTitle }}
+                                </a>
+                            </h3>
+                            <p class="post_description">
+                                {{ article.getTextShort }}...
+                            </p>
+                            <p class="post_detail">
+                                <time class="post_time">
+                                    ·{{ article.getCreatedAt|date('H:i d M. Y')}}
+                                </time>
+                                <span class="post_read_time"> · {{ article.getMinRead}} min read</span>
+                                <span class="post_comments"> · 2 comments</span>
+                                {% if showPostAuthor %}
+                                    <span class="post_author">
+                                                · <a href="{{ path('user_view', {nickname: article.getUser.getNickname}) }}">
+                                                    {{ article.getUser.getNickname }}
+                                                </a>
+                                            </span>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+    {% endif %}
+{% endblock %}

@@ -111,6 +111,15 @@ class UserArticleCrudController extends AbstractCrudController
      */
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
+        $date = \DateTimeImmutable::createFromFormat('U', time());
+        $article = $this->articleFactory->create(
+            $entityInstance->getTitle(),
+            $entityInstance->getText(),
+            $date,
+            $entityInstance->getSlug(),
+            $entityInstance->getTextShort()
+        );
+
         if ($entityInstance->getMainImagePath()) {
             $imagePath = $this->getParameter('image_path') . $entityInstance->getMainImagePath();
             $image = (new ImageFactory())->create($imagePath);
@@ -118,7 +127,7 @@ class UserArticleCrudController extends AbstractCrudController
             $entityManager->persist($image);
             $entityManager->flush();
 
-            $entityInstance->setMainImage($image);
+            $article->setMainImage($image);
         }
 
         if ($entityInstance->getCoverImagePath()) {
@@ -128,17 +137,8 @@ class UserArticleCrudController extends AbstractCrudController
             $entityManager->persist($image);
             $entityManager->flush();
 
-            $entityInstance->setCoverImage($image);
+            $article->setCoverImage($image);
         }
-
-        $date = \DateTimeImmutable::createFromFormat('U', time());
-        $article = $this->articleFactory->create(
-            $entityInstance->getTitle(),
-            $entityInstance->getText(),
-            $date,
-            $entityInstance->getSlug(),
-            $entityInstance->getTextShort()
-        );
 
         $article->setUser($this->getUser());
 
@@ -150,6 +150,10 @@ class UserArticleCrudController extends AbstractCrudController
 
         $estimator = new ReadTimeEstimateHelper($article->getText());
         $article->setMinRead($estimator->getMinutes());
+
+        // set SEO parameters
+        $article->setMetaTitle($entityInstance->getMetaTitle());
+        $article->setMetaDescription($entityInstance->getMetaDescription());
 
         parent::persistEntity($entityManager, $article);
     }
@@ -215,6 +219,15 @@ class UserArticleCrudController extends AbstractCrudController
                     return md5($file->getBasename()) . '_' . time() . ".{$file->guessExtension()}";
                 })
                 ->onlyOnForms(),
+
+            // meta fields
+            TextField::new('meta_title', 'Meta заголовок')
+                ->setRequired(false),
+            TextField::new('meta_description')
+                ->setRequired(false)
+                ->onlyOnIndex(),
+            TextField::new('meta_description', 'Meta описание (желательно до 60 символов)')
+                ->setRequired(false)->hideOnIndex(),
 
             AssociationField::new('tags', 'Tags'),
 

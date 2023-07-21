@@ -1,5 +1,23 @@
 {% extends 'base.html.twig' %}
 
+{# change meta title if exists #}
+{% block title %}
+    {% if article.getMetaTitle %}
+        {{ article.getMetaTitle }}
+    {% else %}
+        {{ page_title }}
+    {% endif %}
+{% endblock %}
+
+{# change meta description if exists #}
+{% block page_description %}
+    {% if article.getMetaDescription %}
+        {{ article.getMetaDescription }}
+    {% elseif meta_description %}
+            {{ meta_description }}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
 {{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
 

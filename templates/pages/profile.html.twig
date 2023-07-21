@@ -50,42 +50,8 @@
         <h2 class="posts_title">Список статей</h2>
         <div class="default-indent"></div>
         {% for article in user.getArticles %}
-          <div class="col-lg-6 col-md-12 col-sm-12">
-            <div class="post_item">
-              <a href="{{ path('article_read', {slug: article.getSlug}) }}">
-                <div class="post_wrapper">
-                  {% if article.getMainImage %}
-                    <img src="{{ article.getMainImage.getPath }}" alt="{{ article.getTitle }}">
-                  {% else %}
-                    <img src="{{ asset('img/dummy_article.png') }}" alt="{{ article.getTitle }}">
-                  {% endif %}
-                  <p class="post_tag">
-                    {% for tag in article.getTags %}
-                      <a href="{{ path('tag_index', {tagLink: tag.getLink}) }}">
-                        {{ tag.getTitle }}
-                      </a>
-                    {% endfor %}
-                  </p>
-
-                  <h2 class="post_title">
-                    <a href="{{ path('article_read', {slug: article.getSlug}) }}">
-                      {{ article.getTitle }}
-                    </a>
-                  </h2>
-                  <p class="post_description">
-                    {{ article.getTextShort }}...
-                  </p>
-                  <p class="post_detail">
-                    <time class="post_time">
-                      ·{{ article.getCreatedAt|date('H:i d M. Y')}}
-                    </time>
-                    <span class="post_read_time"> · {{ article.getMinRead}} min read</span>
-                    <span class="post_comments"> · 2 comments</span>
-                  </p>
-                </div>
-              </a>
-            </div>
-          </div>
+            {% set showPostAuthor = false %}
+            {% include 'inner/post.html.twig' %}
         {% endfor %}
       </div>
   </section>
