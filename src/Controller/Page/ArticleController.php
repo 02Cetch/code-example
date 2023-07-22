@@ -7,10 +7,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/article')]
+#[Route('/article', name: 'article')]
 class ArticleController extends AbstractController
 {
-    #[Route('/read/{slug}', name: 'article_read')]
+    #[Route('/read/{slug}', name: '_read')]
     public function read(string $slug, ArticleService $articleService): Response
     {
         $article = $articleService->getArticleBySlug($slug);

@@ -14,7 +14,7 @@ class UserController extends AbstractApiController
     {
     }
 
-    #[Route('/tags/{userId}', name: 'api_user_tags', methods: ['GET'])]
+    #[Route('/tags/{userId}', name: '_tags', methods: ['GET'])]
     public function getUserTags(int $userId): Response
     {
         try {

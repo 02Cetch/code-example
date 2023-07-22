@@ -385,4 +385,60 @@ footer {
   }
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.current {
+  font-weight: bold;
+  color: $light;
+  background: darken($accent, 3);
+  padding: 8px 12px;
+  margin-right: 5px;
+}
+
+/* Стили для номеров страниц */
+.page {
+  margin-right: 5px;
+  a {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #0f172a;
+    background: $light;
+
+    &:hover {
+      background-color: $accent;
+      color: $light;
+      transition: all .2s;
+    }
+  }
+}
+
+/* Стили для "Следующая страница" и "Последняя страница" */
+.first,
+.previous,
+.next,
+.last {
+  margin-right: 5px;
+
+  a {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #0f172a;
+    background: $light;
+
+    &:hover {
+      background-color: $accent;
+      color: $light;
+      transition: all .2s;
+    }
+  }
+}
+
 @import "media"; // Всегда в конце

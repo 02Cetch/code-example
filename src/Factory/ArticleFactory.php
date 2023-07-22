@@ -9,10 +9,11 @@ class ArticleFactory
 {
     public function create(
         string $title,
-        string $text, \DateTimeImmutable $dateCreate,
+        string $text,
+        \DateTimeImmutable $dateCreate,
         string $slug = null,
-        string $textShort = null): Article
-    {
+        string $textShort = null
+    ): Article {
         $article = new Article();
         $article->setTitle($title);
 

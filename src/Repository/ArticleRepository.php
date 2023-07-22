@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -50,6 +51,18 @@ class ArticleRepository extends ServiceEntityRepository
 
         $query = $queryBuilder->getQuery();
         return $query->getResult();
+    }
+
+    public function getArticlesQueryByTagLink(string $tagLink): Query
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $queryBuilder->join('a.tags', 't');
+        $queryBuilder->where('t.link = :link');
+        $queryBuilder->orderBy('a.created_at', 'DESC');
+
+        $queryBuilder->setParameter('link', $tagLink);
+
+        return $queryBuilder->getQuery();
     }
 
 //    /**

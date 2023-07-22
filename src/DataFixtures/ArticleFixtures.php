@@ -23,7 +23,7 @@ class ArticleFixtures extends Fixture
     {
         $articleFactory = new ArticleFactory();
 
-        for($i = 0; $i < self::ARTICLE_QUANTITY; $i++) {
+        for ($i = 0; $i < self::ARTICLE_QUANTITY; $i++) {
             $dateTime = \DateTimeImmutable::createFromMutable($this->faker->dateTime);
 
             $article = $articleFactory->create(

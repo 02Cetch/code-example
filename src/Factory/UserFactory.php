@@ -7,12 +7,16 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFactory
 {
-    public function __construct(private readonly UserPasswordHasherInterface  $passwordHasher)
+    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher)
     {
     }
 
-    public function create(string $email, string $nickname, string $plainPassword, string $role = User::DEFAULT_ROLE): User
-    {
+    public function create(
+        string $email,
+        string $nickname,
+        string $plainPassword,
+        string $role = User::DEFAULT_ROLE
+    ): User {
         $user = new User();
         $user->setEmail($email);
         $user->setNickname($nickname);

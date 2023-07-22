@@ -13,6 +13,11 @@
                 {% include 'inner/post.html.twig' %}
             {% endfor %}
             </div>
+        <div class="row">
+            <div class="col-md-3">
+                {{ knp_pagination_render(articles) }}
+            </div>
         </div>
+    </div>
 </section>
 {% endblock %}
