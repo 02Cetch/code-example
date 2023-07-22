@@ -3,16 +3,17 @@
 namespace App\Service;
 
 use App\Entity\Tag;
-use App\Exception\ServiceException;
-use App\Repository\ArticleRepository;
+use App\Exception\NotFoundRepositoryException;
 use App\Repository\TagRepository;
+use App\Service\Cache\RedisStorageManager;
 
 class TagService
 {
     public function __construct(
         private readonly TagRepository $tagRepository,
-        private readonly ArticleRepository $articleRepository
-    ) {}
+        private readonly RedisStorageManager $cache
+    ) {
+    }
 
     public function getTopTags(int $limit = 5): array
     {
@@ -20,34 +21,23 @@ class TagService
     }
 
     /**
-     * @throws ServiceException
+     * @throws NotFoundRepositoryException
      */
-    public function getTagsCountByUserId(int $userId): array
+    public function getTagsQuantityByUserId(int $userId): array
     {
-        $queryBuilder = $this->articleRepository->createQueryBuilder('a');
-        $queryBuilder->select('t.title', 'COUNT(t.id) as quantity')
-            ->join('a.tags', 't')
-            ->join('a.user', 'u')
-            ->where('u.id = :userId')
-            ->setParameter(':userId', $userId)
-            ->groupBy('t.id');
-
-        $query = $queryBuilder->getQuery();
-        $tags = $query->getArrayResult();
-        if (!$tags) {
-            throw new ServiceException("Tags for user $userId not found");
+        $key = "tags:quantity:userid:$userId";
+        if ($this->cache->has($key)) {
+            $tags = $this->cache->jsonDecode($this->cache->find($key));
+        } else {
+            $tags = $this->tagRepository->findTagsQuantityByUserId($userId);
+            $this->cache->set($key, $this->cache->jsonEncode($tags));
         }
         return $tags;
     }
 
     public function getMockTagsCount(): array
     {
-        $queryBuilder = $this->tagRepository->createQueryBuilder('t');
-        $queryBuilder->select('t.title', '0 as quantity')
-            ->groupBy('t.id');
-
-        $query = $queryBuilder->getQuery();
-        $tags = $query->getArrayResult();
+        $tags = $this->tagRepository->getMockTagsQuantity();
         if (!$tags) {
             return [];
         }

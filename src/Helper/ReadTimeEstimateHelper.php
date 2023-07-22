@@ -4,9 +4,10 @@ namespace App\Helper;
 
 class ReadTimeEstimateHelper
 {
-    const WORDS_PER_MINUTE = 200;
-    const STR_MINUTE = 'мин.';
-    const STR_SECOND = 'сек.';
+    private const WORDS_PER_MINUTE = 200;
+    private const STR_MINUTE = 'мин.';
+    private const STR_SECOND = 'сек.';
+
     private int $minutes;
     private int $seconds;
 
@@ -14,7 +15,7 @@ class ReadTimeEstimateHelper
      * readTimeEstimate constructor.
      * @param string $str
      */
-    function __construct(string $str)
+    public function __construct(string $str)
     {
         $wordCount = $this->wordCount(strip_tags($str));
         $this->minutes = ceil($wordCount / static::WORDS_PER_MINUTE);

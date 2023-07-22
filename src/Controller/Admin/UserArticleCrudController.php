@@ -3,9 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
+use App\Entity\User;
 use App\Factory\ArticleFactory;
 use App\Factory\ImageFactory;
+use App\Helper\Cache\ArticleCacheHelper;
 use App\Helper\ReadTimeEstimateHelper;
+use App\Service\Cache\RedisStorageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -34,14 +37,20 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class UserArticleCrudController extends AbstractCrudController
 {
     public function __construct(
-        private readonly ArticleFactory $articleFactory
-    )
-    {
+        private readonly ArticleFactory $articleFactory,
+        private readonly ArticleCacheHelper $cacheHelper
+    ) {
     }
 
     public static function getEntityFqcn(): string
     {
         return Article::class;
+    }
+
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
+            ->setEntityLabelInPlural('Мои статьи');
     }
 
     public function configureActions(Actions $actions): Actions
@@ -50,8 +59,7 @@ class UserArticleCrudController extends AbstractCrudController
             ->linkToRoute('article_read', function (Article $article) {
                 return ['slug' => $article->getSlug()];
             })
-            ->setHtmlAttributes(['target' => '_blank'])
-        );
+            ->setHtmlAttributes(['target' => '_blank']));
         return $actions;
     }
 
@@ -74,21 +82,27 @@ class UserArticleCrudController extends AbstractCrudController
             $filters
         );
 
+        /**
+         * @var User $user
+         */
         $user = $this->getUser();
 
         // get generic alias
         $alias = $queryBuilder->getRootAliases()[0];
 
         $queryBuilder->join($alias . '.user', 'u');
-        $queryBuilder->andWhere('u.id = '.$user->getId());
+        $queryBuilder->andWhere('u.id = ' . $user->getId());
         return $queryBuilder;
     }
 
     /**
      * Modifies the Article instance inside @var EntityDto $entityDto to set the value for virtual field
      */
-    public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
-    {
+    public function createEditForm(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormInterface {
         /**
          * @var Article $entity
          */
@@ -155,6 +169,9 @@ class UserArticleCrudController extends AbstractCrudController
         $article->setMetaTitle($entityInstance->getMetaTitle());
         $article->setMetaDescription($entityInstance->getMetaDescription());
 
+        // resets cache
+        $this->cacheHelper->reset($article);
+
         parent::persistEntity($entityManager, $article);
     }
 
@@ -197,6 +214,10 @@ class UserArticleCrudController extends AbstractCrudController
         $date = \DateTimeImmutable::createFromFormat('U', time());
         $entityInstance->setCreatedAt($date);
         $entityInstance->setUpdatedAt($date);
+
+        // resets cache
+        $this->cacheHelper->reset($entityInstance);
+
         parent::updateEntity($entityManager, $entityInstance);
     }
 
@@ -252,10 +273,5 @@ class UserArticleCrudController extends AbstractCrudController
                 ->hideOnIndex()
                 ->setFormType(CKEditorType::class),
         ];
-    }
-
-    public function configureCrud(Crud $crud): Crud
-    {
-        return $crud->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig');
     }
 }

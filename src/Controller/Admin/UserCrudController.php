@@ -26,9 +26,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_ADMIN')]
 class UserCrudController extends AbstractCrudController
 {
-    public function __construct(
-        private readonly UserFactory $userFactory
-    )
+    public function __construct(private readonly UserFactory $userFactory)
     {
     }
 
@@ -59,8 +57,11 @@ class UserCrudController extends AbstractCrudController
     /**
      * Modifies the User instance inside @var EntityDto $entityDto to set the value for virtual field
      */
-    public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
-    {
+    public function createEditForm(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormInterface {
         $entity = $entityDto->getInstance();
 
         $role = $entity->getRoles()[0] ?? null;
@@ -91,6 +92,9 @@ class UserCrudController extends AbstractCrudController
             }
         }
 
+        $user->setJobTitle($entityInstance->getJobTitle());
+        $user->setAboutText($entityInstance->getAboutText());
+
         parent::persistEntity($entityManager, $user);
     }
 
@@ -100,8 +104,7 @@ class UserCrudController extends AbstractCrudController
             ->linkToRoute('user_view', function (User $user) {
                 return ['nickname' => $user->getNickname()];
             })
-            ->setHtmlAttributes(['target' => '_blank'])
-        );
+            ->setHtmlAttributes(['target' => '_blank']));
         return $actions;
     }
 

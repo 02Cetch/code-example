@@ -5,7 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Article;
 use App\Factory\ArticleFactory;
 use App\Factory\ImageFactory;
+use App\Helper\Cache\ArticleCacheHelper;
 use App\Helper\ReadTimeEstimateHelper;
+use App\Service\Cache\RedisStorageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -29,9 +31,9 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
 class ArticleCrudController extends AbstractCrudController
 {
     public function __construct(
-        private readonly ArticleFactory $articleFactory
-    )
-    {
+        private readonly ArticleFactory $articleFactory,
+        private readonly ArticleCacheHelper $cacheHelper
+    ) {
     }
 
     public static function getEntityFqcn(): string
@@ -42,8 +44,11 @@ class ArticleCrudController extends AbstractCrudController
     /**
      * Modifies the Article instance inside @var EntityDto $entityDto to set the value for virtual field
      */
-    public function createEditForm(EntityDto $entityDto, KeyValueStore $formOptions, AdminContext $context): FormInterface
-    {
+    public function createEditForm(
+        EntityDto $entityDto,
+        KeyValueStore $formOptions,
+        AdminContext $context
+    ): FormInterface {
         /**
          * @var Article $entity
          */
@@ -110,6 +115,9 @@ class ArticleCrudController extends AbstractCrudController
         $article->setMetaTitle($entityInstance->getMetaTitle());
         $article->setMetaDescription($entityInstance->getMetaDescription());
 
+        // resets cache
+        $this->cacheHelper->reset($article);
+
         parent::persistEntity($entityManager, $article);
     }
 
@@ -148,6 +156,10 @@ class ArticleCrudController extends AbstractCrudController
         $date = \DateTimeImmutable::createFromFormat('U', time());
         $entityInstance->setCreatedAt($date);
         $entityInstance->setUpdatedAt($date);
+
+        // resets cache
+        $this->cacheHelper->reset($entityInstance);
+
         parent::updateEntity($entityManager, $entityInstance);
     }
 
@@ -157,8 +169,7 @@ class ArticleCrudController extends AbstractCrudController
                 ->linkToRoute('article_read', function (Article $article) {
                     return ['slug' => $article->getSlug()];
                 })
-                ->setHtmlAttributes(['target' => '_blank'])
-            );
+                ->setHtmlAttributes(['target' => '_blank']));
         return $actions;
     }
 

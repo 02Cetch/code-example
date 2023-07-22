@@ -2,7 +2,7 @@
 
 namespace App\Controller\Page;
 
-use App\Service\ArticleService;;
+use App\Service\ArticleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Exception\ServiceException;
+use App\Exception\NotFoundRepositoryException;
 use App\Service\TagService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,8 +18,8 @@ class UserController extends AbstractApiController
     public function getUserTags(int $userId): Response
     {
         try {
-            $tags = $this->tagService->getTagsCountByUserId($userId);
-        } catch (ServiceException $e) {
+            $tags = $this->tagService->getTagsQuantityByUserId($userId);
+        } catch (NotFoundRepositoryException $e) {
             $tags = $this->tagService->getMockTagsCount();
         }
         return $this->response($tags);

@@ -39,6 +39,19 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByTagLink(string $tagLink): array
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+        $queryBuilder->join('a.tags', 't');
+        $queryBuilder->where('t.link = :link');
+        $queryBuilder->orderBy('a.created_at', 'DESC');
+
+        $queryBuilder->setParameter('link', $tagLink);
+
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */
