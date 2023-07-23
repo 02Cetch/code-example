@@ -26,10 +26,11 @@ class TagController extends AbstractController
         $tagTitle = $tagService->getTagByLink($tagLink)->getTitle();
         $articlesQuery = $service->getArticlesQueryByTagLink($tagLink);
 
+        $itemsPerPage = 6;
         $articlePagination = $paginator->paginate(
             $articlesQuery,
             $this->request->getCurrentRequest()->query->getInt('page', 1),
-            6
+            $itemsPerPage
         );
 
         return $this->render('pages/tag.html.twig', [
