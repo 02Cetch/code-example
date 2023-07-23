@@ -8,6 +8,7 @@
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
+                    <a href="{{ path('admin_index') }}"><<<</a>
                     <h4 class="card-title text-center mb-4">Настройки</h4>
                     <form>
                         {% for setting in settings %}
@@ -17,7 +18,9 @@
                             </div>
                             <br>
                         {% endfor %}
-                        <br>
+                        <input type="hidden" name="_csrf_token"
+                               value="{{ csrf_token('authenticate') }}"
+                        >
                         <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
                     </form>
                 </div>
