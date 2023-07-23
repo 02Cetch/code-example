@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title text-center mb-4">Настройки</h4>
+                    <form>
+                        {% for setting in settings %}
+                            <div class="form-group">
+                                <label for="robotsTxt">{{ setting.getTitle }}</label>
+                                {{ setting.getFieldHtml|raw }}
+                            </div>
+                            <br>
+                        {% endfor %}
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

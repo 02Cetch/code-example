@@ -47,6 +47,8 @@ class AdminDashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Навыки', 'fa-solid fa-pen', UserSkill::class),
             MenuItem::linkToCrud('Пользователи', 'fas fa-user', User::class)
                 ->setPermission('ROLE_ADMIN'),
+            MenuItem::linkToRoute('Настройки', 'fa-solid fa-gear', 'admin_settings_index')
+                ->setPermission('ROLE_ADMIN'),
         ];
     }
 }
