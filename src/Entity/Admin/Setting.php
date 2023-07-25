@@ -4,6 +4,8 @@ namespace App\Entity\Admin;
 
 use App\Repository\Admin\SettingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 #[ORM\Entity(repositoryClass: SettingRepository::class)]
 class Setting

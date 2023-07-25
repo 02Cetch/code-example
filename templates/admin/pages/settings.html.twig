@@ -1,19 +1,17 @@
-{% extends 'base.html.twig' %}
+{% extends '@EasyAdmin/layout.html.twig' %}
 
-{% block body %}
-{{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
+{% block content %}
 
 <div class="container mt-5 mb-5">
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-body">
-                    <a href="{{ path('admin_index') }}"><<<</a>
                     <h4 class="card-title text-center mb-4">Настройки</h4>
                     <form>
                         {% for setting in settings %}
                             <div class="form-group">
-                                <label for="robotsTxt">{{ setting.getTitle }}</label>
+                                <label>{{ setting.getTitle }}</label>
                                 {{ setting.getFieldHtml|raw }}
                             </div>
                             <br>

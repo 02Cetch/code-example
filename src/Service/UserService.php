@@ -3,7 +3,8 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Exception\ServiceException;
+use App\Exception\Service\NotFoundServiceException;
+use App\Exception\Service\ServiceException;
 use App\Repository\UserRepository;
 
 class UserService
@@ -13,7 +14,7 @@ class UserService
     }
 
     /**
-     * @throws ServiceException
+     * @throws NotFoundServiceException
      */
     public function getTagsByUserId(int $userId): array
     {
@@ -22,7 +23,7 @@ class UserService
     }
 
     /**
-     * @throws ServiceException
+     * @throws NotFoundServiceException
      */
     public function getUserById(int $userId): User
     {
@@ -31,7 +32,7 @@ class UserService
          */
         $user = $this->userRepository->findOneBy(['id' => $userId]);
         if (!$user) {
-            throw new ServiceException('User not found');
+            throw new NotFoundServiceException('User not found');
         }
         return $user;
     }

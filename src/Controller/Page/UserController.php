@@ -2,7 +2,7 @@
 
 namespace App\Controller\Page;
 
-use App\Exception\ServiceException;
+use App\Exception\Service\ServiceException;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @throws ServiceException
+     * @throws \App\Exception\Service\ServiceException
      */
     #[Route('/{nickname}', name: '_view')]
     public function viewPage(string $nickname, UserService $userService): Response

@@ -1,5 +1,5 @@
 start:
-	php -S localhost:8055 -t ./public
+	php -S localhost:8066 -t ./public
 migrate:
 	symfony console doctrine:migrations:migrate
 seed:

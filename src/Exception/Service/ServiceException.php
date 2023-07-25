@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exception;
+namespace App\Exception\Service;
 
 class ServiceException extends \Exception
 {
