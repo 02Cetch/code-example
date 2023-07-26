@@ -27,7 +27,10 @@ class SettingsHelper
                 break;
             case SettingTypeName::URL->value:
                 $setting->setFieldHtml(
-                    "<input type=\"url\" class=\"form-control\" id=\"{$setting->getId()}\"
+                    "<input type=\"url\"
+                                class=\"form-control\"
+                                id=\"{$setting->getId()}\"
+                                name=\"{$setting->getName()}\"
                                 value=\"$fieldValue\" >"
                 );
                 break;
@@ -37,6 +40,7 @@ class SettingsHelper
                                     class=\"form-control\" name=\"{$setting->getName()}\"
                                     rows=\"5\"
                                     placeholder=\"{$setting->getTitle()}\"
+                                    id=\"{$setting->getId()}\"
                                     style=\"height: 53px;\">$fieldValue</textarea>"
                 );
                 break;

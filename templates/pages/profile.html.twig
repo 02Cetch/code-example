@@ -54,6 +54,7 @@
             {% include 'inner/post.html.twig' %}
         {% endfor %}
       </div>
+    </div>
   </section>
 
 <script>
@@ -61,7 +62,7 @@
   function getData(userId) {
    var headers = new Headers();
       headers.append('Accept', 'application/json');
-      fetch(`http://localhost:8055/api/user/tags/${userId}`, {
+      fetch(`{{ host }}/api/user/tags/${userId}`, {
           headers: headers
       })
       .then(response => response.json())

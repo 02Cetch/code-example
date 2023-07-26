@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Tag;
-use App\Exception\NotFoundRepositoryException;
+use App\Exception\Repository\NotFoundRepositoryException;
 use App\Repository\TagRepository;
 use App\Service\Cache\RedisStorageManager;
 

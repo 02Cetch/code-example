@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Exception\Normalizer\BadInputNormalizerException;
 use App\Exception\Service\BadInputServiceException;
 use App\Exception\Service\NotFoundServiceException;
 use App\Service\Admin\SettingService;
@@ -11,11 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('/api/settings', name: 'api_settings')]
 class SettingsController extends AbstractApiController
 {
-    #[IsGranted('ROLE_ADMIN')]
-    #[Route('/', name: '_update', methods: ['PUT', 'PATCH'])]
+    #[Route('/', name: '_update', methods: ['PATCH'])]
     public function update(
         SettingService $service,
         Request $request
@@ -30,7 +31,7 @@ class SettingsController extends AbstractApiController
         } catch (NotFoundServiceException $e) {
             $this->setStatusCode(Response::HTTP_NOT_FOUND);
             return $this->respondWithErrors($e->getMessage());
-        } catch (BadInputServiceException $e) {
+        } catch (BadInputServiceException | BadInputNormalizerException $e) {
             $this->setStatusCode(Response::HTTP_BAD_REQUEST);
             return $this->respondWithErrors($e->getMessage());
         }

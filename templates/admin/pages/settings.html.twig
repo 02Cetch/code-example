@@ -8,7 +8,7 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title text-center mb-4">Настройки</h4>
-                    <form>
+                    <form id="settings-form">
                         {% for setting in settings %}
                             <div class="form-group">
                                 <label>{{ setting.getTitle }}</label>
@@ -26,4 +26,50 @@
         </div>
     </div>
 </div>
+
+    <script>
+    document.getElementById("settings-form").addEventListener("submit", function(event) {
+        event.preventDefault(); // Предотвращаем отправку формы по умолчанию
+
+        // Получаем все элементы с атрибутом name
+        var elements = this.elements;
+
+        // Создаем массив объектов с данными для отправки на сервер
+        var dataToSend = [];
+
+        for (var i = 0; i < elements.length; i++) {
+            var element = elements[i];
+            if (element.name && element.name !== "_csrf_token") {
+                dataToSend.push({
+                    "id": element.id,
+                    "value": element.value
+                });
+            }
+        }
+
+        // Выполняем AJAX-запрос на сервер с помощью fetch()
+        fetch("{{ host }}/api/settings/", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dataToSend)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Произошла ошибка при выполнении запроса!");
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Обработка успешного ответа от сервера
+            console.log("Запрос успешно выполнен!");
+            console.log(data);
+        })
+        .catch(error => {
+            // Обработка ошибок при запросе
+            console.error(error.message);
+        });
+    });
+</script>
 {% endblock %}

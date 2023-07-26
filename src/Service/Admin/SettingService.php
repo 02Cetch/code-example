@@ -3,10 +3,12 @@
 namespace App\Service\Admin;
 
 use App\Entity\Admin\Setting;
+use App\Exception\Normalizer\BadInputNormalizerException;
 use App\Exception\Service\BadInputServiceException;
 use App\Exception\Service\NotFoundServiceException;
 use App\Helper\Settings\SettingsHelper;
 use App\Repository\Admin\SettingRepository;
+use App\Service\Normalizer\Settings\SettingsNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 
 class SettingService
@@ -14,7 +16,8 @@ class SettingService
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly SettingRepository $setting,
-        private readonly SettingsHelper $helper
+        private readonly SettingsHelper $helper,
+        private readonly SettingsNormalizer $normalizer
     ) {
     }
 
@@ -32,6 +35,7 @@ class SettingService
     /**
      * @throws BadInputServiceException
      * @throws NotFoundServiceException
+     * @throws BadInputNormalizerException
      */
     public function update(array $data): void
     {
@@ -40,7 +44,9 @@ class SettingService
                 throw new BadInputServiceException('Missing required fields');
             }
             $setting = $this->getSettingById($item['id']);
-            $setting->setValue($item['value']);
+            $setting->setDenormalizedValue($item['value']);
+
+            $setting = $this->normalizer->normalize($setting);
             $this->entityManager->persist($setting);
         }
         $this->entityManager->flush();

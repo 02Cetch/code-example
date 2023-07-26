@@ -35,6 +35,8 @@ class Setting
     #[ORM\ManyToOne(inversedBy: 'settings')]
     private ?SettingType $type = null;
 
+    private mixed $denormalizedValue;
+
     private ?string $fieldHtml = null;
 
     public function getId(): ?int
@@ -128,5 +130,21 @@ class Setting
     public function setFieldHtml(?string $fieldHtml): void
     {
         $this->fieldHtml = $fieldHtml;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDenormalizedValue(): mixed
+    {
+        return $this->denormalizedValue;
+    }
+
+    /**
+     * @param mixed $denormalizedValue
+     */
+    public function setDenormalizedValue(mixed $denormalizedValue): void
+    {
+        $this->denormalizedValue = $denormalizedValue;
     }
 }

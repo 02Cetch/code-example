@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Exception\NotFoundRepositoryException;
+use App\Exception\Repository\NotFoundRepositoryException;
 use App\Service\TagService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

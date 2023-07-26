@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Tag;
-use App\Exception\NotFoundRepositoryException;
+use App\Exception\Repository\NotFoundRepositoryException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -41,7 +41,7 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws NotFoundRepositoryException
+     * @throws \App\Exception\Repository\NotFoundRepositoryException
      */
     public function findTagsQuantityByUserId(int $userId): array
     {

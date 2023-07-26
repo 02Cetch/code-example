@@ -68,7 +68,6 @@ abstract class AbstractApiController extends AbstractController
                 'errors' => $errors
             ],
         ];
-
         return new JsonResponse($data, $this->getStatusCode(), $headers);
     }
 
