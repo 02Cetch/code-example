@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\Article;
+use App\Helper\ReadTimeEstimateHelper;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class ArticleFactory
@@ -30,6 +31,10 @@ class ArticleFactory
         } else {
             $article->setTextShort(mb_substr($text, 0, 100));
         }
+
+        // sets minutes of reading for article
+        $estimator = new ReadTimeEstimateHelper($article->getText());
+        $article->setMinRead($estimator->getMinutes());
 
         $article->setCreatedAt($dateCreate);
         $article->setUpdatedAt($dateCreate);
