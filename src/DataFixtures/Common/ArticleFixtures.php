@@ -11,8 +11,6 @@ use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Faker\Generator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
-
 class ArticleFixtures extends Fixture implements FixtureGroupInterface
 {
     private const ARTICLE_QUANTITY = 50;

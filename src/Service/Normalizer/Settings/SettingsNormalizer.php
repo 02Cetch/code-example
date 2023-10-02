@@ -9,7 +9,6 @@ class SettingsNormalizer
 {
     use SettingsNormalizerTrait;
 
-    private Setting $setting;
     private array $typeToNormalizer;
 
     /**
@@ -20,7 +19,6 @@ class SettingsNormalizer
     public function normalize(Setting $setting): Setting
     {
         $this->typeToNormalizer = $this->getSettingTypeToNormalizer();
-        $this->setting = $setting;
 
         $settingTypeName = $setting->getType()->getName();
         if ($this->isValidatorExists($settingTypeName)) {

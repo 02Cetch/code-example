@@ -26,7 +26,7 @@ abstract class AbstractApiController extends AbstractController
      *
      * @param int $statusCode the status code
      *
-     * @return self
+     * @return static
      */
     protected function setStatusCode(int $statusCode): static
     {

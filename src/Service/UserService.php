@@ -28,7 +28,7 @@ class UserService
     public function getUserById(int $userId): User
     {
         /**
-         * @var User $user
+         * @var ?User $user
          */
         $user = $this->userRepository->findOneBy(['id' => $userId]);
         if (!$user) {
@@ -43,7 +43,7 @@ class UserService
     public function getUserByNickname(string $nickname): User
     {
         /**
-         * @var User $user
+         * @var ?User $user
          */
         $user = $this->userRepository->findOneBy(['nickname' => $nickname]);
         if (!$user) {

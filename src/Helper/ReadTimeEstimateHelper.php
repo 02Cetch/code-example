@@ -18,8 +18,8 @@ class ReadTimeEstimateHelper
     public function __construct(string $str)
     {
         $wordCount = $this->wordCount(strip_tags($str));
-        $this->minutes = ceil($wordCount / static::WORDS_PER_MINUTE);
-        $this->seconds = ceil($wordCount % static::WORDS_PER_MINUTE / (static::WORDS_PER_MINUTE / 60));
+        $this->minutes = (int) ceil($wordCount / self::WORDS_PER_MINUTE);
+        $this->seconds = (int) ceil($wordCount % self::WORDS_PER_MINUTE / (self::WORDS_PER_MINUTE / 60));
     }
 
     /**
@@ -27,11 +27,11 @@ class ReadTimeEstimateHelper
      */
     public function __toString(): string
     {
-        return ($this->minutes == 0)    ? $this->seconds . ' ' . static::STR_MINUTE
+        return ($this->minutes == 0)    ? $this->seconds . ' ' . self::STR_MINUTE
             : $this->minutes . ' ' .
-            static::STR_MINUTE . ', ' .
+            self::STR_MINUTE . ', ' .
             $this->seconds . ' ' .
-            static::STR_SECOND;
+            self::STR_SECOND;
     }
 
     public function getMinutes(): int

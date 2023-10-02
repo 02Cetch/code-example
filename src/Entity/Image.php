@@ -58,7 +58,7 @@ class Image
         return $this->is_deleted;
     }
 
-    public function setIsDeleted(string $is_deleted): self
+    public function setIsDeleted(bool $is_deleted): self
     {
         $this->is_deleted = $is_deleted;
 

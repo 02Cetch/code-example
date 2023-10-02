@@ -32,7 +32,6 @@ class UserSkill
 
     public function __construct()
     {
-        $this->user = new ArrayCollection();
         $this->users = new ArrayCollection();
     }
 

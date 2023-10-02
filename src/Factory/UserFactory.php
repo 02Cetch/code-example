@@ -3,6 +3,7 @@
 namespace App\Factory;
 
 use App\Entity\User;
+use DateTimeImmutable;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFactory
@@ -26,7 +27,7 @@ class UserFactory
         $user->setPassword($this->passwordHasher->hashPassword($user, $user->getPlainPassword()));
 
         // sets created/updated at fields
-        $dateCreate = \DateTimeImmutable::createFromFormat('U', time());
+        $dateCreate = new DateTimeImmutable();
         $user->setCreatedAt($dateCreate);
         $user->setUpdatedAt($dateCreate);
 
