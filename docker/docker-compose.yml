@@ -1,0 +1,36 @@
+version: '3.3'
+
+services:
+  php:
+    container_name: ${APP_NAME}-app
+    build: ./php
+    ports: [ '9000:9000' ]
+    volumes: [ "${BASE_DIR}/:/var/www/workdir:cached" ]
+#    restart: always
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    ports: [ '8000:80' ]
+    volumes: [ "${BASE_DIR}/:/var/www/workdir:cached" ]
+#    restart: always
+  db:
+    image: mysql:8
+#    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_USER_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - ./cache/mysql:/var/lib/mysql
+  cache:
+    image: redis:7.2-rc3-bookworm
+#    restart: always
+    ports:
+      - "${REDIS_PORT}:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - ./cache/redis:/data
