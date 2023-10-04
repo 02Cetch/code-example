@@ -18,6 +18,12 @@ when@dev:
             #chromephp:
             #    type: chromephp
             #    level: info
+
+            sentry:
+                type: sentry
+                level: !php/const Monolog\Logger::ERROR
+                hub_id: Sentry\State\HubInterface
+
             console:
                 type: console
                 process_psr_3_messages: false

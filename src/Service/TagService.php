@@ -4,14 +4,14 @@ namespace App\Service;
 
 use App\Entity\Tag;
 use App\Exception\Repository\NotFoundRepositoryException;
+use App\Facade\Cache\TagCacheManager;
 use App\Repository\TagRepository;
-use App\Service\Cache\RedisStorageManager;
 
 class TagService
 {
     public function __construct(
         private readonly TagRepository $tagRepository,
-        private readonly RedisStorageManager $cache
+        private readonly TagCacheManager $cacheManager
     ) {
     }
 
@@ -25,14 +25,8 @@ class TagService
      */
     public function getTagsQuantityByUserId(int $userId): array
     {
-        $key = "tags:quantity:userid:$userId";
-        if ($this->cache->has($key)) {
-            $tags = $this->cache->jsonDecode($this->cache->find($key));
-        } else {
-            $tags = $this->tagRepository->findTagsQuantityByUserId($userId);
-            $this->cache->set($key, $this->cache->jsonEncode($tags));
-        }
-        return $tags;
+        $key = "tags_quantity_userid_$userId";
+        return $this->cacheManager->cacheByUserId($key, $this->tagRepository->findTagsQuantityByUserId($userId));
     }
 
     public function getMockTagsCount(): array

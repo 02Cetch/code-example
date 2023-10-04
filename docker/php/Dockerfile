@@ -20,6 +20,11 @@ RUN pecl install imagick \
     && pecl install redis \
     && docker-php-ext-enable redis
 
+# install ext-http
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
+    install-php-extensions http
+
 # for composer cache
 RUN mkdir -p /var/www/.composer
 

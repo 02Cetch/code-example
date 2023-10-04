@@ -16,4 +16,5 @@ return [
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
     SymfonyBundles\RedisBundle\SymfonyBundlesRedisBundle::class => ['all' => true],
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+    Sentry\SentryBundle\SentryBundle::class => ['all' => true],  // TODO replace with ['prod' => true]
 ];

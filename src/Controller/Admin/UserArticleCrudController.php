@@ -4,11 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Entity\User;
+use App\Facade\Cache\TagCacheManager;
 use App\Factory\ArticleFactory;
 use App\Factory\ImageFactory;
-use App\Helper\Cache\ArticleCacheHelper;
 use App\Helper\ReadTimeEstimateHelper;
-use App\Service\Cache\RedisStorageManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FieldCollection;
@@ -38,7 +37,7 @@ class UserArticleCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly ArticleFactory $articleFactory,
-        private readonly ArticleCacheHelper $cacheHelper
+        private readonly TagCacheManager $cacheManager
     ) {
     }
 
@@ -170,7 +169,7 @@ class UserArticleCrudController extends AbstractCrudController
         $article->setMetaDescription($entityInstance->getMetaDescription());
 
         // resets cache
-        $this->cacheHelper->reset($article);
+        $this->cacheManager->resetByUserId($article->getUser()->getId());
 
         parent::persistEntity($entityManager, $article);
     }
@@ -216,7 +215,7 @@ class UserArticleCrudController extends AbstractCrudController
         $entityInstance->setUpdatedAt($date);
 
         // resets cache
-        $this->cacheHelper->reset($entityInstance);
+        $this->cacheManager->resetByUserId($entityInstance->getUser()->getId());
 
         parent::updateEntity($entityManager, $entityInstance);
     }
