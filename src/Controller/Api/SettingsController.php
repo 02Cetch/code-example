@@ -2,13 +2,12 @@
 
 namespace App\Controller\Api;
 
+use App\Dto\Request\Settings\SettingsUpdateRequest;
 use App\Exception\Normalizer\BadInputNormalizerException;
-use App\Exception\Service\BadInputServiceException;
 use App\Exception\Service\NotFoundServiceException;
 use App\Service\Admin\SettingService;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -16,25 +15,26 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/api/settings', name: 'api_settings')]
 class SettingsController extends AbstractApiController
 {
-    #[Route('/', name: '_update', methods: ['PATCH'])]
+    public function __construct(private readonly SettingService $service)
+    {
+    }
+
+    #[Route('/', name: '_list', methods: ['GET'])]
+    public function list(): JsonResponse
+    {
+        $settings = $this->service->getSettings();
+        return $this->respond('Settings list', $settings);
+    }
+
+    /**
+     * @throws NotFoundServiceException
+     * @throws BadInputNormalizerException
+     */
+    #[Route('/', name: '_update', methods: ['PUT', 'PATCH'])]
     public function update(
-        SettingService $service,
-        Request $request
+        #[MapRequestPayload] SettingsUpdateRequest $request
     ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-        if (!is_array($data)) {
-            $this->setStatusCode(Response::HTTP_BAD_REQUEST);
-            return $this->respondWithErrors('Invalid JSON');
-        }
-        try {
-            $service->update($data);
-        } catch (NotFoundServiceException $e) {
-            $this->setStatusCode(Response::HTTP_NOT_FOUND);
-            return $this->respondWithErrors($e->getMessage());
-        } catch (BadInputServiceException | BadInputNormalizerException $e) {
-            $this->setStatusCode(Response::HTTP_BAD_REQUEST);
-            return $this->respondWithErrors($e->getMessage());
-        }
-        return $this->respondWithSuccess('Settings successfully updated');
+        $this->service->update($request);
+        return $this->respond('Settings successfully updated');
     }
 }

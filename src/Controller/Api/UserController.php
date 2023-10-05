@@ -14,7 +14,7 @@ class UserController extends AbstractApiController
     {
     }
 
-    #[Route('/tags/{userId}', name: '_tags', methods: ['GET'])]
+    #[Route('/{userId}/tags', name: '_tags', methods: ['GET'])]
     public function getUserTags(int $userId): Response
     {
         try {
@@ -22,6 +22,6 @@ class UserController extends AbstractApiController
         } catch (NotFoundRepositoryException $e) {
             $tags = $this->tagService->getMockTagsCount();
         }
-        return $this->response($tags);
+        return $this->respond('Tags list', $tags);
     }
 }

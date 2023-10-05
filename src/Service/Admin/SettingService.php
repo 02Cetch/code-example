@@ -2,9 +2,11 @@
 
 namespace App\Service\Admin;
 
+use App\Dto\Request\Settings\SettingsUpdateRequest;
+use App\Dto\Response\Settings\SettingsListItem;
+use App\Dto\Response\Settings\SettingsListResponse;
 use App\Entity\Admin\Setting;
 use App\Exception\Normalizer\BadInputNormalizerException;
-use App\Exception\Service\BadInputServiceException;
 use App\Exception\Service\NotFoundServiceException;
 use App\Helper\Settings\SettingsHelper;
 use App\Repository\Admin\SettingRepository;
@@ -21,7 +23,7 @@ class SettingService
     ) {
     }
 
-    public function getSettings(): array
+    public function getSettings(): SettingsListResponse
     {
         $settings = $this->setting->findAll();
         foreach ($settings as &$setting) {
@@ -29,22 +31,29 @@ class SettingService
         }
         unset($setting);
 
-        return $settings;
+        return new SettingsListResponse(array_map(function (Setting $setting) {
+            return new SettingsListItem(
+                $setting->getId(),
+                $setting->getName(),
+                $setting->getTitle(),
+                $setting->getValue(),
+                $setting->getAllowedValues(),
+                $setting->getFieldHtml()
+            );
+        }, $settings));
     }
 
     /**
-     * @throws BadInputServiceException
      * @throws NotFoundServiceException
      * @throws BadInputNormalizerException
      */
-    public function update(array $data): void
+    public function update(SettingsUpdateRequest $request): void
     {
-        foreach ($data as $item) {
-            if (!isset($item['id'], $item['value'])) {
-                throw new BadInputServiceException('Missing required fields');
-            }
-            $setting = $this->getSettingById($item['id']);
-            $setting->setDenormalizedValue($item['value']);
+        $items = $request->getItems();
+
+        foreach ($items as $item) {
+            $setting = $this->getSettingById($item->getId());
+            $setting->setDenormalizedValue($item->getValue());
 
             $setting = $this->normalizer->normalize($setting);
             $this->entityManager->persist($setting);

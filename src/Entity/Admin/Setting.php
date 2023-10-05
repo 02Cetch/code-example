@@ -142,9 +142,12 @@ class Setting
 
     /**
      * @param mixed $denormalizedValue
+     * @return Setting
      */
-    public function setDenormalizedValue(mixed $denormalizedValue): void
+    public function setDenormalizedValue(mixed $denormalizedValue): static
     {
         $this->denormalizedValue = $denormalizedValue;
+
+        return $this;
     }
 }

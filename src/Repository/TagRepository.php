@@ -41,7 +41,7 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws \App\Exception\Repository\NotFoundRepositoryException
+     * @throws NotFoundRepositoryException
      */
     public function findTagsQuantityByUserId(int $userId): array
     {
