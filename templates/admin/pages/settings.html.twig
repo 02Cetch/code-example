@@ -51,6 +51,7 @@
         fetch("{{ host }}/api/settings/", {
             method: "PATCH",
             headers: {
+                "Accept": "application/json",
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(dataToSend)

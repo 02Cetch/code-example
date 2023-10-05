@@ -62,7 +62,7 @@
   function getData(userId) {
    var headers = new Headers();
       headers.append('Accept', 'application/json');
-      fetch(`{{ host }}/api/user/tags/${userId}`, {
+      fetch(`{{ host }}/api/user/${userId}/tags`, {
           headers: headers
       })
       .then(response => response.json())
@@ -76,7 +76,7 @@
               }]
           };
 
-          data.data.forEach(item => {
+          data.data.items.forEach(item => {
               chartData.labels.push(item.title);
               chartData.datasets[0].data.push(item.quantity);
           });

@@ -7,6 +7,17 @@ parameters:
     image_path: '%env(IMAGE_DIRECTORY)%'
     app.host: '%env(HOST)%'
     app.cache.redis.prefix: '%env(REDIS_PREFIX)%'
+    # exceptions mapping
+    exceptions:
+        # http 400
+        App\Exception\Service\BadInputServiceException: { code: 400, hidden: false, loggable: false }
+        App\Exception\Normalizer\BadInputNormalizerException: { code: 400, hidden: false, loggable: false }
+        # http 403
+        Symfony\Component\Security\Core\Exception\AccessDeniedException: { code: 403, hidden: false, loggable: false }
+        # http 404
+        App\Exception\Service\NotFoundServiceException: { code: 404, hidden: false, loggable: false }
+        # http 500
+        App\Exception\Service\ServiceException: { code: 500, hidden: false, loggable: false }
 
 services:
     # default configuration for services in *this* file
