@@ -63,10 +63,12 @@ class ExceptionMappingResolverTest extends TestCase
 
     public function testResolvesSubClass(): void
     {
-        $resolver = new ExceptionMappingResolver([\LogicException::class => ['code' => 500]]);
+        $resolver = new ExceptionMappingResolver(
+            [\LogicException::class => ['code' => Response::HTTP_INTERNAL_SERVER_ERROR]]
+        );
         $mapping = $resolver->resolve(\InvalidArgumentException::class);
 
-        $this->assertEquals(500, $mapping->getCode());
+        $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $mapping->getCode());
     }
 
     public function testResolvesHidden(): void
