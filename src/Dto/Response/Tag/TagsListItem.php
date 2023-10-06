@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Response\Tags;
+namespace App\Dto\Response\Tag;
 
 class TagsListItem
 {

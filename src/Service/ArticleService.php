@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Article;
 use App\Repository\ArticleRepository;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query;
 
 class ArticleService
@@ -27,7 +28,7 @@ class ArticleService
         return $this->articleRepository->findByTagLink($tagLink);
     }
 
-    public function getArticlesQueryByTagLink(string $tagLink): Query
+    public function getArticlesQueryByTagLink(string $tagLink): AbstractQuery
     {
         return $this->articleRepository->getArticlesQueryByTagLink($tagLink);
     }

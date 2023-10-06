@@ -22,6 +22,6 @@ class UserController extends AbstractApiController
         } catch (NotFoundRepositoryException $e) {
             $tags = $this->tagService->getMockTagsCount();
         }
-        return $this->respond('Tags list', $tags);
+        return $this->respond('Tag list', $tags);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Article;
 use App\Entity\User;
-use App\Facade\Cache\TagCacheManager;
+use App\Facade\Cache\TagCacheFacade;
 use App\Factory\ArticleFactory;
 use App\Factory\ImageFactory;
 use App\Helper\ReadTimeEstimateHelper;
@@ -37,7 +37,7 @@ class UserArticleCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly ArticleFactory $articleFactory,
-        private readonly TagCacheManager $cacheManager
+        private readonly TagCacheFacade $cacheFacade
     ) {
     }
 
@@ -169,7 +169,7 @@ class UserArticleCrudController extends AbstractCrudController
         $article->setMetaDescription($entityInstance->getMetaDescription());
 
         // resets cache
-        $this->cacheManager->resetByUserId($article->getUser()->getId());
+        $this->cacheFacade->resetByUserId($article->getUser()->getId());
 
         parent::persistEntity($entityManager, $article);
     }
@@ -215,7 +215,7 @@ class UserArticleCrudController extends AbstractCrudController
         $entityInstance->setUpdatedAt($date);
 
         // resets cache
-        $this->cacheManager->resetByUserId($entityInstance->getUser()->getId());
+        $this->cacheFacade->resetByUserId($entityInstance->getUser()->getId());
 
         parent::updateEntity($entityManager, $entityInstance);
     }
@@ -249,7 +249,7 @@ class UserArticleCrudController extends AbstractCrudController
             TextField::new('meta_description', 'Meta описание (желательно до 60 символов)')
                 ->setRequired(false)->hideOnIndex(),
 
-            AssociationField::new('tags', 'Tags'),
+            AssociationField::new('tags', 'Tag'),
 
             TextField::new('slug', 'Слаг статьи (генерируется автоматически, если оставить пустым)')
                 ->hideOnIndex(),

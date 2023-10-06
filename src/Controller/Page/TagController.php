@@ -2,41 +2,30 @@
 
 namespace App\Controller\Page;
 
-use App\Service\ArticleService;
-use App\Service\TagService;
-use Knp\Component\Pager\PaginatorInterface;
+use App\Facade\ArticleFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(path:'/tag', name: 'tag')]
 class TagController extends AbstractController
 {
     public function __construct(private readonly RequestStack $request)
     {
     }
 
-    #[Route('/tag/{tagLink}', name: 'tag_index')]
-    public function index(
-        string $tagLink,
-        ArticleService $service,
-        TagService $tagService,
-        PaginatorInterface $paginator
-    ): Response {
-        $tagTitle = $tagService->getTagByLink($tagLink)->getTitle();
-        $articlesQuery = $service->getArticlesQueryByTagLink($tagLink);
-
-        $itemsPerPage = 6;
-        $articlePagination = $paginator->paginate(
-            $articlesQuery,
-            $this->request->getCurrentRequest()->query->getInt('page', 1),
-            $itemsPerPage
+    #[Route(path:'/{tagLink}', name: '_view')]
+    public function view(string $tagLink, ArticleFacade $facade): Response
+    {
+        $articlePaginationResponse = $facade->getPaginatedArticlesByTagLinkAndRequestStack(
+            $tagLink,
+            $this->request
         );
-
         return $this->render('pages/tag.html.twig', [
-            'page_title' => "RuLeak | $tagTitle",
-            'tag_title' => $tagTitle,
-            'articles' => $articlePagination
+            'page_title' => "RuLeak | {$articlePaginationResponse->getTagTitle()}",
+            'tag_title' => $articlePaginationResponse->getTagTitle(),
+            'articles' => $articlePaginationResponse->getPagination()
         ]);
     }
 }

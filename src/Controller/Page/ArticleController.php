@@ -10,8 +10,8 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/article', name: 'article')]
 class ArticleController extends AbstractController
 {
-    #[Route('/read/{slug}', name: '_read')]
-    public function read(string $slug, ArticleService $articleService): Response
+    #[Route('/read/{slug}', name: '_view')]
+    public function view(string $slug, ArticleService $articleService): Response
     {
         $article = $articleService->getArticleBySlug($slug);
         return $this->render('pages/article.html.twig', [

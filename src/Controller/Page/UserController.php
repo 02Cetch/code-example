@@ -12,10 +12,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     /**
-     * @throws \App\Exception\Service\ServiceException
+     * @throws ServiceException
      */
     #[Route('/{nickname}', name: '_view')]
-    public function viewPage(string $nickname, UserService $userService): Response
+    public function view(string $nickname, UserService $userService): Response
     {
         $user = $userService->getUserByNickname($nickname);
         return $this->render('pages/profile.html.twig', [

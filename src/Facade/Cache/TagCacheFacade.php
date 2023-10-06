@@ -2,11 +2,11 @@
 
 namespace App\Facade\Cache;
 
-final class TagCacheManager
+final class TagCacheFacade
 {
     private const KEY = "tags_quantity_userid";
 
-    public function __construct(private readonly CacheManager $manager)
+    public function __construct(private readonly CacheFacade $manager)
     {
     }
 

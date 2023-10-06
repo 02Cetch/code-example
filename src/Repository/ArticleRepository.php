@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -53,7 +54,7 @@ class ArticleRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function getArticlesQueryByTagLink(string $tagLink): Query
+    public function getArticlesQueryByTagLink(string $tagLink): AbstractQuery
     {
         $queryBuilder = $this->createQueryBuilder('a');
         $queryBuilder->join('a.tags', 't');
@@ -64,29 +65,4 @@ class ArticleRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery();
     }
-
-//    /**
-//     * @return Article[] Returns an array of Article objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Article
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

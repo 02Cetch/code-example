@@ -5,7 +5,7 @@ namespace App\Facade\Cache;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final class CacheManager
+final class CacheFacade
 {
     public function __construct(private readonly CacheInterface $cache)
     {
