@@ -19,7 +19,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% for tag in tags %}
                             <li>
-                                <a class="dropdown-item" href="{{ path('tag_index',  {tagLink: tag.getLink}) }}">
+                                <a class="dropdown-item" href="{{ path('tag_view',  {tagLink: tag.getLink}) }}">
                                     {{ tag.getTitle }}
                                 </a>
                             </li>

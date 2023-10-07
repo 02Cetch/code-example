@@ -24,7 +24,6 @@ class ArticleFacadeTest extends TestCase
 
     protected function setUp(): void
     {
-//        $this->facade = $this->createMock(ArticleFacade::class);
         $this->faker = Factory::create('ru_RU');
 
         $this->request = (new RequestStack());

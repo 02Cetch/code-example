@@ -6,7 +6,7 @@
     {% if article is defined %}
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <div class="post_item">
-                    <a href="{{ path('article_read', {slug: article.getSlug}) }}">
+                    <a href="{{ path('article_view', {slug: article.getSlug}) }}">
                         <div class="post_wrapper">
                             {% if article.getCoverImage %}
                                 <img src="{{ article.getCoverImage.getPath }}" alt="{{ article.getTitle }}">
@@ -15,14 +15,14 @@
                             {% endif %}
                             <p class="post_tag">
                                 {% for tag in article.getTags %}
-                                    <a href="{{ path('tag_index', {tagLink: tag.getLink}) }}">
+                                    <a href="{{ path('tag_view', {tagLink: tag.getLink}) }}">
                                         {{ tag.getTitle }}
                                     </a>
                                 {% endfor %}
                             </p>
 
                             <h3 class="post_title">
-                                <a href="{{ path('article_read', {slug: article.getSlug}) }}">
+                                <a href="{{ path('article_view', {slug: article.getSlug}) }}">
                                     {{ article.getTitle }}
                                 </a>
                             </h3>
