@@ -31,7 +31,7 @@ class ArticleCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly ArticleFactory $articleFactory,
-        private readonly TagCacheFacade $cacheFacade
+        private readonly TagCacheFacade $cacheManager
     ) {
     }
 
@@ -115,7 +115,7 @@ class ArticleCrudController extends AbstractCrudController
         $article->setMetaDescription($entityInstance->getMetaDescription());
 
         // resets cache
-        $this->cacheFacade->resetByUserId($article->getUser()->getId());
+        $this->cacheManager->resetByUserId($article->getUser()->getId());
 
         parent::persistEntity($entityManager, $article);
     }
@@ -157,7 +157,7 @@ class ArticleCrudController extends AbstractCrudController
         $entityInstance->setUpdatedAt($date);
 
         // resets cache
-        $this->cacheFacade->resetByUserId($entityInstance->getUser()->getId());
+        $this->cacheManager->resetByUserId($entityInstance->getUser()->getId());
 
         parent::updateEntity($entityManager, $entityInstance);
     }

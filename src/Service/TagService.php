@@ -13,7 +13,7 @@ class TagService
 {
     public function __construct(
         private readonly TagRepository $tagRepository,
-        private readonly TagCacheFacade $cacheFacade
+        private readonly TagCacheFacade $cacheManager
     ) {
     }
 
@@ -22,25 +22,12 @@ class TagService
         return $this->tagRepository->findBy([], ['weight' => 'ASC'], $limit);
     }
 
-    public function getArticlesByTagLink(string $tagLink)
-    {
-        $tagTitle = $this->getTagByLink($tagLink)->getTitle();
-        $articlesQuery = $service->getArticlesQueryByTagLink($tagLink);
-
-        $itemsPerPage = 6;
-        $articlePagination = $paginator->paginate(
-            $articlesQuery,
-            $this->request->getCurrentRequest()->query->getInt('page', 1),
-            $itemsPerPage
-        );
-    }
-
     /**
      * @throws NotFoundRepositoryException
      */
     public function getTagsQuantityByUserId(int $userId): TagsListResponse
     {
-        return $this->cacheFacade->cacheByUserId($userId, $this->getTagsQuantityFromDbByUserId($userId));
+        return $this->cacheManager->cacheByUserId($userId, $this->getTagsQuantityFromDbByUserId($userId));
     }
 
     public function getMockTagsCount(): TagsListResponse
