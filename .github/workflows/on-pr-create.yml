@@ -14,9 +14,9 @@ jobs:
     - name: Build docker image
       run: docker-compose -f docker/docker-compose.yml build -t php_container
     - name: Install dependencies
-      run: docker run -i -v $PWD:/srv -w/srv php_container composer install
+      run: docker run -i -v $GITHUB_WORKSPACE:/srv -w/srv php_container composer install
     - name: Run static analysis
-      run: docker run -i -v $PWD:/srv -w/srv php_container vendor/bin/phpstan clear-result-cache
+      run: docker run -i -v $GITHUB_WORKSPACE:/srv -w/srv php_container vendor/bin/phpstan clear-result-cache
     - name: Commit changes
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
