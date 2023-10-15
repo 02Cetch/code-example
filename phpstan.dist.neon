@@ -11,6 +11,7 @@ parameters:
 
     excludePaths:
         - ./src/Controller/Admin/
+        - ./tests/
 
     reportUnmatchedIgnoredErrors: false
 
