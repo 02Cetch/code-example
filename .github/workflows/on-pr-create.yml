@@ -4,20 +4,14 @@ name: Run Tests and Analysis on PR
 on: [pull_request]
 
 jobs:
-  build:
+  review:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set up Docker
-      uses: actions/setup-docker@v2
-
-    - name: Build Docker image
-      run: docker build -t your_image_name .
-
-    - name: Run make project
+    - name: Run project
       run: make project
 
     - name: Run tests
