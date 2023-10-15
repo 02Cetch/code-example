@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{{ render(controller('App\\Controller\\Page\\Embedded\\NavbarController::get')) }}
+
+    <section class="s-posts">
+        <div class="default-indent"></div>
+        <div class="container">
+            <div class="row">
+                {% if articles|length > 0 %}
+                    {% for article in articles %}
+                        {% include 'inner/post.html.twig' %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

@@ -23,11 +23,11 @@
 
                             <h3 class="post_title">
                                 <a href="{{ path('article_view', {slug: article.getSlug}) }}">
-                                    {{ article.getTitle }}
+                                    {{ article.getTitle|striptags('<b><u>')|raw }}
                                 </a>
                             </h3>
                             <p class="post_description">
-                                {{ article.getTextShort }}...
+                                {{ article.getTextShort|striptags('<b><u>')|raw }}...
                             </p>
                             <p class="post_detail">
                                 <time class="post_time">

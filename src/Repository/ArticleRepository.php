@@ -41,28 +41,45 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
-    public function findByTagLink(string $tagLink): array
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $queryBuilder->join('a.tags', 't');
-        $queryBuilder->where('t.link = :link');
-        $queryBuilder->orderBy('a.created_at', 'DESC');
-
-        $queryBuilder->setParameter('link', $tagLink);
-
-        $query = $queryBuilder->getQuery();
-        return $query->getResult();
-    }
-
-    public function getArticlesQueryByTagLink(string $tagLink): AbstractQuery
-    {
-        $queryBuilder = $this->createQueryBuilder('a');
-        $queryBuilder->join('a.tags', 't');
-        $queryBuilder->where('t.link = :link');
-        $queryBuilder->orderBy('a.created_at', 'DESC');
-
-        $queryBuilder->setParameter('link', $tagLink);
-
-        return $queryBuilder->getQuery();
-    }
+//    public function findByTagLink(string $tagLink): array
+//    {
+//        $queryBuilder = $this->createQueryBuilder('a');
+//        $queryBuilder->join('a.tags', 't');
+//        $queryBuilder->where('t.link = :link');
+//        $queryBuilder->orderBy('a.created_at', 'DESC');
+//
+//        $queryBuilder->setParameter('link', $tagLink);
+//
+//        $query = $queryBuilder->getQuery();
+//        return $query->getResult();
+//    }
+//
+//    public function getArticlesQueryByTagLink(string $tagLink): AbstractQuery
+//    {
+//        $queryBuilder = $this->createQueryBuilder('a');
+//        $queryBuilder->join('a.tags', 't');
+//        $queryBuilder->where('t.link = :link');
+//        $queryBuilder->orderBy('a.created_at', 'DESC');
+//
+//        $queryBuilder->setParameter('link', $tagLink);
+//
+//        return $queryBuilder->getQuery();
+//    }
+//
+//    /**
+//     * @param string $pattern
+//     * @return Article[]
+//     */
+//    public function getArticlesByPattern(string $pattern): array
+//    {
+//        $queryBuilder = $this->createQueryBuilder('a');
+//        $queryBuilder->join('a.cover_image', 'i');
+//        $queryBuilder->where("MATCH(a.title, a.text, a.text_short) AGAINST(:pattern IN BOOLEAN MODE)");
+//        $queryBuilder->having("MATCH(a.title, a.text, a.text_short) AGAINST(:pattern IN BOOLEAN MODE) > 1");
+//
+//        $queryBuilder->setParameter('pattern', $pattern);
+//
+//        $query = $queryBuilder->getQuery();
+//        return $query->getResult();
+//    }
 }
