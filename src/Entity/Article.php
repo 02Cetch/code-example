@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\Index(columns: ['title', 'text', 'text_short'], name: 'search_idx', flags: ['fulltext'])]
 class Article
 {
     #[ORM\Id]
