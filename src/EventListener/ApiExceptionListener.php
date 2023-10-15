@@ -19,8 +19,8 @@ class ApiExceptionListener
     private const HEADERS_ACCEPT_JSON = 'application/json';
 
     public function __construct(
-        private ExceptionMappingResolver $resolver,
-        private LoggerInterface $logger,
+        private readonly ExceptionMappingResolver $resolver,
+        private readonly LoggerInterface $logger,
         private SerializerInterface $serializer
     ) {
     }

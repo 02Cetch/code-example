@@ -1,0 +1,5 @@
+<form class="mb-2 mb-lg-0 d-flex" method="get" action="{{ path('search_view') }}">
+    <input class="form-control me-2" type="search" name="query" value="{{ searchQuery|default('') }}"
+           placeholder="Поиск" aria-label="Search">
+    <button class="btn btn-outline btn-search" type="submit">Search</button>
+</form>

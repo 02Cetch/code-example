@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends AbstractController
 {
     #[Route('/', name: '_index')]
-    public function index(ArticleService $articleService): Response
+    public function view(ArticleService $articleService): Response
     {
         $articles = $articleService->getLastArticles();
         return $this->render('pages/index.html.twig', [

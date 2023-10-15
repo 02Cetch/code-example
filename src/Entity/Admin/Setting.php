@@ -109,6 +109,10 @@ class Setting
         return $this->type;
     }
 
+    /**
+     * @param SettingType|null $type
+     * @return static
+     */
     public function setType(?SettingType $type): static
     {
         $this->type = $type;
@@ -142,7 +146,7 @@ class Setting
 
     /**
      * @param mixed $denormalizedValue
-     * @return Setting
+     * @return static
      */
     public function setDenormalizedValue(mixed $denormalizedValue): static
     {

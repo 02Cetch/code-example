@@ -9,6 +9,7 @@ use App\Repository\ArticleRepository;
 use App\Service\ArticleService;
 use App\Service\TagService;
 use App\Tests\Mock\MockableArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Faker\Factory;
 use Faker\Generator;
 use Knp\Component\Pager\PaginatorInterface;
@@ -18,6 +19,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class ArticleFacadeTest extends TestCase
 {
+    private readonly ArticleService $articleService;
+
+    private readonly TagService $tagService;
+
+    private readonly PaginatorInterface $paginator;
+
     private readonly ArticleFacade $facade;
     private readonly RequestStack $request;
     private Generator $faker;
@@ -34,40 +41,48 @@ class ArticleFacadeTest extends TestCase
             )
         );
 
+        $this->articleService = $this->createMock(ArticleService::class);
+
+        $this->tagService = $this->createMock(TagService::class);
+        $this->paginator = $this->createMock(PaginatorInterface::class);
+
+        $this->facade = new ArticleFacade(
+            $this->articleService,
+            $this->tagService,
+            $this->paginator
+        );
+
         parent::setUp();
     }
 
     public function testGetPaginatedArticlesByTagLinkAndRequestStack()
     {
-        $articleRepository = $this->createMock(MockableArticleRepository::class);
-        $articleService = (new ArticleService($articleRepository));
-
-        $tagService = $this->createMock(TagService::class);
-        $paginator = $this->createMock(PaginatorInterface::class);
-
-        $facade = new ArticleFacade(
-            $articleService,
-            $tagService,
-            $paginator
-        );
-
         // mocked tag link
         $tagLink = 'mocked_tag_link';
 
-        $articleRepository->expects($this->once())
+        $this->articleService->expects($this->once())
             ->method('getArticlesQueryByTagLink')
             ->with($tagLink);
-        $tagService->expects($this->once())
+        $this->tagService->expects($this->once())
             ->method('getTagByLink')
             ->with($tagLink)
             ->willReturn($this->createMock(Tag::class));
-        $paginator->expects($this->once())
+        $this->paginator->expects($this->once())
             ->method('paginate');
 
-        $articlePaginationResponse = $facade->getPaginatedArticlesByTagLinkAndRequestStack(
+        $articlePaginationResponse = $this->facade->getPaginatedArticlesByTagLinkAndRequestStack(
             $tagLink,
             $this->request
         );
         $this->assertInstanceOf(ArticlePaginationResponse::class, $articlePaginationResponse);
+    }
+
+    public function testGetArticlesBySearchQuery()
+    {
+        $this->articleService->expects($this->once())
+            ->method('getArticlesByPattern');
+
+        $articles = $this->facade->getArticlesBySearchQuery($this->faker->realText(10));
+        $this->assertIsArray($articles);
     }
 }
