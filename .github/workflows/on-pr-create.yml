@@ -1,23 +1,27 @@
-name: CI Review
+
+name: Run Tests and Analysis on PR
 
 on: [pull_request]
 
-permissions:
-  contents: write
-
 jobs:
-  review:
-    runs-on: ubuntu-20.04
+  build:
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build docker image
-      run: docker-compose -f docker/docker-compose.yml build -t php_container
-    - name: Install dependencies
-      run: docker run -i -v $GITHUB_WORKSPACE:/srv -w/srv php_container composer install
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      uses: actions/setup-docker@v2
+
+    - name: Build Docker image
+      run: docker build -t your_image_name .
+
+    - name: Run make project
+      run: make project
+
+    - name: Run tests
+      run: make tests
+
     - name: Run static analysis
-      run: docker run -i -v $GITHUB_WORKSPACE:/srv -w/srv php_container vendor/bin/phpstan clear-result-cache
-    - name: Commit changes
-      uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: CI Review Fixes
+      run: make analysis
