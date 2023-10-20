@@ -3,12 +3,13 @@
 namespace App\Service\Admin;
 
 use App\Dto\Request\Settings\SettingsUpdateRequest;
-use App\Dto\Response\Settings\SettingsListItem;
+use App\Dto\Response\Settings\SettingListItem;
 use App\Dto\Response\Settings\SettingsListResponse;
 use App\Entity\Admin\Setting;
 use App\Exception\Normalizer\BadInputNormalizerException;
 use App\Exception\Service\NotFoundServiceException;
 use App\Helper\Settings\SettingsHelper;
+use App\Mapper\SettingsMapper;
 use App\Repository\Admin\SettingRepository;
 use App\Service\Normalizer\Settings\SettingsNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,14 +33,9 @@ class SettingService
         unset($setting);
 
         return new SettingsListResponse(array_map(function (Setting $setting) {
-            return new SettingsListItem(
-                $setting->getId(),
-                $setting->getName(),
-                $setting->getTitle(),
-                $setting->getValue(),
-                $setting->getAllowedValues(),
-                $setting->getFieldHtml()
-            );
+            $dto = new SettingListItem();
+            SettingsMapper::map($setting, $dto);
+            return $dto;
         }, $settings));
     }
 

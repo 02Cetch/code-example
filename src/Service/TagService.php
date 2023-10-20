@@ -6,6 +6,9 @@ use App\Dto\Response\Tag\TagsListItem;
 use App\Dto\Response\Tag\TagsListResponse;
 use App\Entity\Tag;
 use App\Exception\Repository\NotFoundRepositoryException;
+use App\Exception\Service\BadInputServiceException;
+use App\Exception\Service\NotFoundServiceException;
+use App\Mapper\TagsMapper;
 use App\Repository\TagRepository;
 use App\Service\Cache\TagCacheService;
 
@@ -23,21 +26,25 @@ class TagService
     }
 
     /**
-     * @throws NotFoundRepositoryException
+     * @throws BadInputServiceException
+     * @throws NotFoundServiceException
      */
     public function getTagsQuantityByUserId(int $userId): TagsListResponse
     {
         return $this->cacheService->cacheByUserId($userId, $this->getTagsQuantityFromDbByUserId($userId));
     }
 
+    /**
+     * @return TagsListResponse
+     * @throws BadInputServiceException
+     */
     public function getMockTagsCount(): TagsListResponse
     {
         return new TagsListResponse(array_map(function (array $tag) {
-            return (new TagsListItem(
-                $tag['title'],
-                $tag['quantity']
-            ));
-        }, $this->tagRepository->getMockTagsQuantity()));
+            $dto = new TagsListItem();
+            TagsMapper::map($tag, $dto);
+            return $dto;
+        }, $this->getMockTagsQuantity()));
     }
 
     public function getTagByLink(string $tagLink): Tag
@@ -46,15 +53,50 @@ class TagService
     }
 
     /**
-     * @throws NotFoundRepositoryException
+     * @throws NotFoundServiceException
+     */
+    public function findTagsQuantityByUserId(int $userId): array
+    {
+        $queryBuilder = $this->tagRepository->createQueryBuilder('t');
+        $queryBuilder->select('t.title', 'COUNT(a.id) as quantity')
+            ->join('t.articles', 'a')
+            ->join('a.user', 'u')
+            ->where('u.id = :userId')
+            ->setParameter(':userId', $userId)
+            ->groupBy('t.id');
+        $query = $queryBuilder->getQuery();
+
+        $tags = $query->getArrayResult();
+        if (!$tags) {
+            throw new NotFoundServiceException("Теги для пользователя $userId не найдены");
+        }
+        return $tags;
+    }
+
+    public function getMockTagsQuantity(): array
+    {
+        $queryBuilder = $this->tagRepository->createQueryBuilder('t');
+        $queryBuilder->select('t.title', '0 as quantity')
+            ->groupBy('t.id');
+
+        $query = $queryBuilder->getQuery();
+        $tags = $query->getArrayResult();
+        if (!$tags) {
+            return [];
+        }
+        return $tags;
+    }
+
+    /**
+     * @throws BadInputServiceException
+     * @throws NotFoundServiceException
      */
     private function getTagsQuantityFromDbByUserId(int $userId): TagsListResponse
     {
         return new TagsListResponse(array_map(function (array $tag) {
-            return (new TagsListItem(
-                $tag['title'],
-                $tag['quantity']
-            ));
-        }, $this->tagRepository->findTagsQuantityByUserId($userId)));
+            $dto = new TagsListItem();
+            TagsMapper::map($tag, $dto);
+            return $dto;
+        }, $this->findTagsQuantityByUserId($userId)));
     }
 }

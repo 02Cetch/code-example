@@ -39,39 +39,4 @@ class TagRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-    /**
-     * @throws NotFoundRepositoryException
-     */
-    public function findTagsQuantityByUserId(int $userId): array
-    {
-        $queryBuilder = $this->createQueryBuilder('t');
-        $queryBuilder->select('t.title', 'COUNT(a.id) as quantity')
-            ->join('t.articles', 'a')
-            ->join('a.user', 'u')
-            ->where('u.id = :userId')
-            ->setParameter(':userId', $userId)
-            ->groupBy('t.id');
-        $query = $queryBuilder->getQuery();
-
-        $tags = $query->getArrayResult();
-        if (!$tags) {
-            throw new NotFoundRepositoryException("Теги для пользователя $userId не найдены");
-        }
-        return $tags;
-    }
-
-    public function getMockTagsQuantity(): array
-    {
-        $queryBuilder = $this->createQueryBuilder('t');
-        $queryBuilder->select('t.title', '0 as quantity')
-            ->groupBy('t.id');
-
-        $query = $queryBuilder->getQuery();
-        $tags = $query->getArrayResult();
-        if (!$tags) {
-            return [];
-        }
-        return $tags;
-    }
 }
