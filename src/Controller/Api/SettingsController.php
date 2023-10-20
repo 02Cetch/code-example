@@ -22,7 +22,7 @@ class SettingsController extends AbstractApiController
     #[Route('/', name: '_list', methods: ['GET'])]
     public function list(): JsonResponse
     {
-        $settings = $this->service->getSettings();
+        $settings = $this->service->getSettingsList()->getItems();
         return $this->respond('Settings list', $settings);
     }
 

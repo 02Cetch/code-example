@@ -19,7 +19,7 @@ class UserController extends AbstractController
     {
         $user = $userService->getUserByNickname($nickname);
         return $this->render('pages/profile.html.twig', [
-            'page_title' => "RuLeak | {$user->getNickname()}",
+            'page_title' => "{$this->getParameter('app.name')} | {$user->getNickname()}",
             'user' => $user
         ]);
     }

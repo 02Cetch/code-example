@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Facade\Cache;
+namespace App\Service\Cache;
 
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 
-final class CacheFacade
+final class CacheService
 {
     public function __construct(private readonly CacheInterface $cache)
     {

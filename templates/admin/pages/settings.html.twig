@@ -41,11 +41,15 @@
             var element = elements[i];
             if (element.name && element.name !== "_csrf_token") {
                 dataToSend.push({
-                    "id": element.id,
+                    "id": parseInt(element.id),
                     "value": element.value
                 });
             }
         }
+
+        var payload = {
+            "items": dataToSend
+        };
 
         // Выполняем AJAX-запрос на сервер с помощью fetch()
         fetch("{{ host }}/api/settings/", {
@@ -54,7 +58,7 @@
                 "Accept": "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(dataToSend)
+            body: JSON.stringify(payload)
         })
         .then(response => {
             if (!response.ok) {

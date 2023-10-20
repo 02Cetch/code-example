@@ -29,7 +29,7 @@ class SearchController extends AbstractController
         $articles = $this->articleFacade->getArticlesBySearchQuery($searchQuery);
 
         return $this->render('/pages/search.html.twig', [
-            'page_title' => 'Ruleak | Поиск',
+            'page_title' => "{$this->getParameter('app.name')} | Поиск",
             'articles' => $articles
         ]);
     }

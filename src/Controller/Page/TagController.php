@@ -23,7 +23,7 @@ class TagController extends AbstractController
             $this->request
         );
         return $this->render('pages/tag.html.twig', [
-            'page_title' => "RuLeak | {$articlePaginationResponse->getTagTitle()}",
+            'page_title' => "{$this->getParameter('app.name')} | {$articlePaginationResponse->getTagTitle()}",
             'tag_title' => $articlePaginationResponse->getTagTitle(),
             'articles' => $articlePaginationResponse->getPagination()
         ]);

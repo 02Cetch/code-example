@@ -20,9 +20,9 @@ class SettingsController extends AbstractController
     #[Route('/', name: '_index')]
     public function index(): Response
     {
-        $settings = $this->settingService->getSettings();
+        $settings = $this->settingService->getSettingsList()->getItems();
         return $this->render('/admin/pages/settings.html.twig', [
-            'page_title' => 'RuLeak | Настройки',
+            'page_title' => "{$this->getParameter('app.name')} | Настройки",
             'settings' => $settings
         ]);
     }

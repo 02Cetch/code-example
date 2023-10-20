@@ -11,7 +11,6 @@ help: ## Show make help
 	@echo "\033[93mtest \033[0m                             run unit tests"
 	@echo "\033[93manalysis \033[0m                         run static analysis"
 	@echo "\033[93mcomposer-install \033[0m                 install composer dependencies"
-	@echo "\033[93mmigrate \033[0m                          apply doctrine migrations"
 	@echo "\033[93mseed \033[0m                             apply doctrine seeds"
 	@echo "\033[93mfixtures \033[0m                         apply doctrine fixtures"
 	@echo ""
@@ -34,8 +33,6 @@ analysis:
 	docker exec -it $(APP_NAME)-app /bin/bash -c 'php vendor/bin/phpstan'
 composer-install:
 	docker exec -it $(APP_NAME)-app /bin/bash -c 'composer install'
-migrate:
-	docker exec -it $(APP_NAME)-app /bin/bash -c 'symfony console doctrine:migrations:migrate'
 seed:
 	docker exec -it $(APP_NAME)-app /bin/bash -c 'php bin/console doctrine:fixtures:load --group=seeds --append'
 fixtures:

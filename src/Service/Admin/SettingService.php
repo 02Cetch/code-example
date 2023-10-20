@@ -23,7 +23,7 @@ class SettingService
     ) {
     }
 
-    public function getSettings(): SettingsListResponse
+    public function getSettingsList(): SettingsListResponse
     {
         $settings = $this->setting->findAll();
         foreach ($settings as &$setting) {

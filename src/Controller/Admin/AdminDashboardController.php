@@ -31,7 +31,7 @@ class AdminDashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Ruleak')->renderSidebarMinimized()->renderContentMaximized();
+            ->setTitle($this->getParameter('app.name'))->renderSidebarMinimized()->renderContentMaximized();
     }
 
     public function configureMenuItems(): iterable

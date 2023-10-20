@@ -6,14 +6,14 @@ use App\Dto\Response\Tag\TagsListItem;
 use App\Dto\Response\Tag\TagsListResponse;
 use App\Entity\Tag;
 use App\Exception\Repository\NotFoundRepositoryException;
-use App\Facade\Cache\TagCacheFacade;
 use App\Repository\TagRepository;
+use App\Service\Cache\TagCacheService;
 
 class TagService
 {
     public function __construct(
         private readonly TagRepository $tagRepository,
-        private readonly TagCacheFacade $cacheManager
+        private readonly TagCacheService $cacheService
     ) {
     }
 
@@ -27,7 +27,7 @@ class TagService
      */
     public function getTagsQuantityByUserId(int $userId): TagsListResponse
     {
-        return $this->cacheManager->cacheByUserId($userId, $this->getTagsQuantityFromDbByUserId($userId));
+        return $this->cacheService->cacheByUserId($userId, $this->getTagsQuantityFromDbByUserId($userId));
     }
 
     public function getMockTagsCount(): TagsListResponse

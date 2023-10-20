@@ -3,10 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Article;
-use App\Facade\Cache\TagCacheFacade;
 use App\Factory\ArticleFactory;
 use App\Factory\ImageFactory;
 use App\Helper\ReadTimeEstimateHelper;
+use App\Service\Cache\TagCacheService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -31,7 +31,7 @@ class ArticleCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly ArticleFactory $articleFactory,
-        private readonly TagCacheFacade $cacheManager
+        private readonly TagCacheService $cacheService
     ) {
     }
 
@@ -80,7 +80,7 @@ class ArticleCrudController extends AbstractCrudController
         );
 
         if ($entityInstance->getMainImagePath()) {
-            $imagePath = $this->getParameter('image_path') . $entityInstance->getMainImagePath();
+            $imagePath = $this->getParameter('app.image_path') . $entityInstance->getMainImagePath();
             $image = (new ImageFactory())->create($imagePath);
 
             $entityManager->persist($image);
@@ -90,7 +90,7 @@ class ArticleCrudController extends AbstractCrudController
         }
 
         if ($entityInstance->getCoverImagePath()) {
-            $imagePath = "{$this->getParameter('image_path')}/{$entityInstance->getCoverImagePath()}";
+            $imagePath = "{$this->getParameter('app.image_path')}/{$entityInstance->getCoverImagePath()}";
             $image = (new ImageFactory())->create($imagePath);
 
             $entityManager->persist($image);
@@ -115,7 +115,7 @@ class ArticleCrudController extends AbstractCrudController
         $article->setMetaDescription($entityInstance->getMetaDescription());
 
         // resets cache
-        $this->cacheManager->resetByUserId($article->getUser()->getId());
+        $this->cacheService->resetByUserId($article->getUser()->getId());
 
         parent::persistEntity($entityManager, $article);
     }
@@ -128,7 +128,7 @@ class ArticleCrudController extends AbstractCrudController
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
         if ($entityInstance->getMainImagePath()) {
-            $imagePath = "{$this->getParameter('image_path')}/{$entityInstance->getMainImagePath()}";
+            $imagePath = "{$this->getParameter('app.image_path')}/{$entityInstance->getMainImagePath()}";
             $image = (new ImageFactory())->create($imagePath);
 
             $entityManager->persist($image);
@@ -138,7 +138,7 @@ class ArticleCrudController extends AbstractCrudController
         }
 
         if ($entityInstance->getCoverImagePath()) {
-            $imagePath = "{$this->getParameter('image_path')}/{$entityInstance->getCoverImagePath()}";
+            $imagePath = "{$this->getParameter('app.image_path')}/{$entityInstance->getCoverImagePath()}";
             $image = (new ImageFactory())->create($imagePath);
 
             $entityManager->persist($image);
@@ -157,7 +157,7 @@ class ArticleCrudController extends AbstractCrudController
         $entityInstance->setUpdatedAt($date);
 
         // resets cache
-        $this->cacheManager->resetByUserId($entityInstance->getUser()->getId());
+        $this->cacheService->resetByUserId($entityInstance->getUser()->getId());
 
         parent::updateEntity($entityManager, $entityInstance);
     }
@@ -165,7 +165,7 @@ class ArticleCrudController extends AbstractCrudController
     public function configureActions(Actions $actions): Actions
     {
         $actions->add(Crud::PAGE_INDEX, Action::new('open', 'Открыть')
-                ->linkToRoute('article_read', function (Article $article) {
+                ->linkToRoute('article_view', function (Article $article) {
                     return ['slug' => $article->getSlug()];
                 })
                 ->setHtmlAttributes(['target' => '_blank']));
@@ -179,14 +179,14 @@ class ArticleCrudController extends AbstractCrudController
             TextField::new('title'),
 
             ImageField::new('main_image_path', 'Главная картинка')
-                ->setUploadDir("/public{$this->getParameter('image_path')}")
+                ->setUploadDir("/public{$this->getParameter('app.image_path')}")
                 ->setUploadedFileNamePattern(function (UploadedFile $file): string {
                     return md5($file->getBasename()) . '_' . time() . ".{$file->guessExtension()}";
                 })
                 ->onlyOnForms(),
 
             ImageField::new('cover_image_path', 'Превью')
-                ->setUploadDir("/public{$this->getParameter('image_path')}")
+                ->setUploadDir("/public{$this->getParameter('app.image_path')}")
                 ->setUploadedFileNamePattern(function (UploadedFile $file): string {
                     return md5($file->getBasename()) . '_' . time() . ".{$file->guessExtension()}";
                 })

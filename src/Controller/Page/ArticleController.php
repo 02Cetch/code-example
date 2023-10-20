@@ -15,7 +15,7 @@ class ArticleController extends AbstractController
     {
         $article = $articleService->getArticleBySlug($slug);
         return $this->render('pages/article.html.twig', [
-            'page_title' => "RuLeak | {$article->getTitle()}",
+            'page_title' => "{$this->getParameter('app.name')} | {$article->getTitle()}",
             'meta_description' => $article->getTextShort(),
             'article' => $article
         ]);

@@ -15,7 +15,7 @@ class IndexController extends AbstractController
     {
         $articles = $articleService->getLastArticles();
         return $this->render('pages/index.html.twig', [
-            'page_title' => 'RuLeak — блог о технологиях и не только',
+            'page_title' => "{$this->getParameter('app.name')} — блог о технологиях и не только",
             'articles' => $articles
         ]);
     }
