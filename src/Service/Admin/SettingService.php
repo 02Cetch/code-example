@@ -3,7 +3,7 @@
 namespace App\Service\Admin;
 
 use App\Dto\Request\Settings\SettingsUpdateRequest;
-use App\Dto\Response\Settings\SettingListItem;
+use App\Dto\Response\Settings\SettingsListItem;
 use App\Dto\Response\Settings\SettingsListResponse;
 use App\Entity\Admin\Setting;
 use App\Exception\Normalizer\BadInputNormalizerException;
@@ -33,7 +33,7 @@ class SettingService
         unset($setting);
 
         return new SettingsListResponse(array_map(function (Setting $setting) {
-            $dto = new SettingListItem();
+            $dto = new SettingsListItem();
             SettingsMapper::map($setting, $dto);
             return $dto;
         }, $settings));

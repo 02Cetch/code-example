@@ -5,7 +5,7 @@ namespace App\Dto\Response\Settings;
 class SettingsListResponse
 {
     /**
-     * @param SettingListItem[] $items
+     * @param SettingsListItem[] $items
      */
     public function __construct(private readonly array $items)
     {

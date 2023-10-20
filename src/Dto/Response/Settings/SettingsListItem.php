@@ -2,6 +2,6 @@
 
 namespace App\Dto\Response\Settings;
 
-class SettingListItem extends BaseSettingDetails
+class SettingsListItem extends BaseSettingDetails
 {
 }
