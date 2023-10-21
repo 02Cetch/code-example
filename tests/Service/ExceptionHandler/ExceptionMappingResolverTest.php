@@ -4,12 +4,12 @@ namespace App\Tests\Service\ExceptionHandler;
 
 use App\Service\ExceptionHandler\ExceptionMapping;
 use App\Service\ExceptionHandler\ExceptionMappingResolver;
+use App\Tests\AbstractTestCase;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\HttpFoundation\Response;
 
-class ExceptionMappingResolverTest extends TestCase
+class ExceptionMappingResolverTest extends AbstractTestCase
 {
     /**
      * expects exception for missing http code

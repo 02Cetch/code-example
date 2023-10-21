@@ -5,19 +5,16 @@ namespace App\Tests\Facade;
 use App\Dto\Response\Article\ArticlePaginationResponse;
 use App\Entity\Tag;
 use App\Facade\ArticleFacade;
-use App\Repository\ArticleRepository;
 use App\Service\ArticleService;
 use App\Service\TagService;
-use App\Tests\Mock\MockableArticleRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Tests\AbstractTestCase;
 use Faker\Factory;
 use Faker\Generator;
 use Knp\Component\Pager\PaginatorInterface;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ArticleFacadeTest extends TestCase
+class ArticleFacadeTest extends AbstractTestCase
 {
     private readonly ArticleService $articleService;
 

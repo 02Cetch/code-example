@@ -6,13 +6,13 @@ use App\Entity\Admin\Setting;
 use App\Enum\SettingTypeName;
 use App\Exception\Normalizer\BadInputNormalizerException;
 use App\Service\Normalizer\Settings\SettingsNormalizer;
+use App\Tests\AbstractTestCase;
 use App\Tests\Factory\SettingFactory;
 use App\Tests\Factory\SettingTypeFactory;
 use Faker\Factory;
 use Faker\Generator;
-use PHPUnit\Framework\TestCase;
 
-class SettingsNormalizerTest extends TestCase
+class SettingsNormalizerTest extends AbstractTestCase
 {
     private readonly SettingsNormalizer $normalizer;
     private Generator $faker;

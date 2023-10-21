@@ -13,6 +13,7 @@ parameters:
         # http 400
         App\Exception\Service\BadInputServiceException: { code: 400, hidden: false, loggable: false }
         App\Exception\Normalizer\BadInputNormalizerException: { code: 400, hidden: false, loggable: false }
+        App\Exception\Mapper\BadInputMapperException: { code: 400, hidden: false, loggable: true }
         # http 403
         Symfony\Component\Security\Core\Exception\AccessDeniedException: { code: 403, hidden: false, loggable: false }
         # http 404

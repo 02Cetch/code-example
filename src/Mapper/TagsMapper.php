@@ -3,17 +3,17 @@
 namespace App\Mapper;
 
 use App\Dto\Response\Tag\TagsListItem;
-use App\Exception\Service\BadInputServiceException;
+use App\Exception\Mapper\BadInputMapperException;
 
 class TagsMapper
 {
     /**
-     * @throws BadInputServiceException
+     * @throws BadInputMapperException
      */
     public static function map(array $tagData, TagsListItem $dto): void
     {
         if (empty($tagData['title']) || empty($tagData['quantity'])) {
-            throw new BadInputServiceException("Wrong tag data result");
+            throw new BadInputMapperException("Wrong tag data result");
         }
 
         $dto

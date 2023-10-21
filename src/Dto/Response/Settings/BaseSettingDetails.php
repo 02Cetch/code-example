@@ -5,11 +5,11 @@ namespace App\Dto\Response\Settings;
 class BaseSettingDetails
 {
     private int $id;
-    private string $name;
-    private string $title;
+    private ?string $name;
+    private ?string $title;
     private ?array $value;
     private ?array $allowed_values;
-    private string $fieldHtml;
+    private ?string $fieldHtml;
 
     public function getId(): int
     {
@@ -27,7 +27,7 @@ class BaseSettingDetails
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
         return $this;
@@ -38,7 +38,7 @@ class BaseSettingDetails
         return $this->title;
     }
 
-    public function setTitle(string $title): self
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
         return $this;
@@ -71,7 +71,7 @@ class BaseSettingDetails
         return $this->fieldHtml;
     }
 
-    public function setFieldHtml(string $fieldHtml): self
+    public function setFieldHtml(?string $fieldHtml): self
     {
         $this->fieldHtml = $fieldHtml;
         return $this;
