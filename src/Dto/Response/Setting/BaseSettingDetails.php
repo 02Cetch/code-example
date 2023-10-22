@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Response\Settings;
+namespace App\Dto\Response\Setting;
 
 class BaseSettingDetails
 {

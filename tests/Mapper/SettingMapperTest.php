@@ -2,14 +2,14 @@
 
 namespace App\Tests\Mapper;
 
-use App\Dto\Response\Settings\SettingsListItem;
+use App\Dto\Response\Setting\SettingsListItem;
 use App\Entity\Admin\Setting;
-use App\Mapper\SettingsMapper;
+use App\Mapper\SettingMapper;
 use App\Tests\AbstractTestCase;
 use Faker\Factory;
 use Faker\Generator;
 
-class SettingsMapperTest extends AbstractTestCase
+class SettingMapperTest extends AbstractTestCase
 {
     private Generator $faker;
 
@@ -34,7 +34,7 @@ class SettingsMapperTest extends AbstractTestCase
             ->setFieldHtml($setting->getFieldHtml());
 
         $dto = new SettingsListItem();
-        SettingsMapper::map($setting, $dto);
+        SettingMapper::map($setting, $dto);
 
         $this->assertEquals($expected, $dto);
     }

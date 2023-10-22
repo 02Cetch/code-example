@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Service\Normalizer\Settings;
+namespace App\Tests\Service\Normalizer\Setting;
 
 use App\Entity\Admin\Setting;
 use App\Enum\SettingTypeName;
 use App\Exception\Normalizer\BadInputNormalizerException;
-use App\Service\Normalizer\Settings\SettingsNormalizer;
+use App\Service\Normalizer\Setting\SettingsNormalizer;
 use App\Tests\AbstractTestCase;
 use App\Tests\Factory\SettingFactory;
 use App\Tests\Factory\SettingTypeFactory;

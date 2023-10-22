@@ -5,7 +5,7 @@ namespace App\Mapper;
 use App\Dto\Response\Tag\TagsListItem;
 use App\Exception\Mapper\BadInputMapperException;
 
-class TagsMapper
+class TagMapper
 {
     /**
      * @throws BadInputMapperException

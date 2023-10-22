@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dto\Request\Settings;
+namespace App\Dto\Request\Setting;
 
 class SettingsUpdateRequest
 {

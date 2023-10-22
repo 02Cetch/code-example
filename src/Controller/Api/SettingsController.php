@@ -2,7 +2,7 @@
 
 namespace App\Controller\Api;
 
-use App\Dto\Request\Settings\SettingsUpdateRequest;
+use App\Dto\Request\Setting\SettingsUpdateRequest;
 use App\Exception\Normalizer\BadInputNormalizerException;
 use App\Exception\Service\NotFoundServiceException;
 use App\Service\Admin\SettingService;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Normalizer\Settings;
+namespace App\Service\Normalizer\Setting;
 
 use App\Entity\Admin\Setting;
 use App\Exception\Normalizer\BadInputNormalizerException;

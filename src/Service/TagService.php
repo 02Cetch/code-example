@@ -5,10 +5,11 @@ namespace App\Service;
 use App\Dto\Response\Tag\TagsListItem;
 use App\Dto\Response\Tag\TagsListResponse;
 use App\Entity\Tag;
+use App\Exception\Mapper\BadInputMapperException;
 use App\Exception\Repository\NotFoundRepositoryException;
 use App\Exception\Service\BadInputServiceException;
 use App\Exception\Service\NotFoundServiceException;
-use App\Mapper\TagsMapper;
+use App\Mapper\TagMapper;
 use App\Repository\TagRepository;
 use App\Service\Cache\TagCacheService;
 
@@ -36,13 +37,13 @@ class TagService
 
     /**
      * @return TagsListResponse
-     * @throws BadInputServiceException
+     * @throws BadInputMapperException
      */
     public function getMockTagsCount(): TagsListResponse
     {
         return new TagsListResponse(array_map(function (array $tag) {
             $dto = new TagsListItem();
-            TagsMapper::map($tag, $dto);
+            TagMapper::map($tag, $dto);
             return $dto;
         }, $this->getMockTagsQuantity()));
     }
@@ -95,7 +96,7 @@ class TagService
     {
         return new TagsListResponse(array_map(function (array $tag) {
             $dto = new TagsListItem();
-            TagsMapper::map($tag, $dto);
+            TagMapper::map($tag, $dto);
             return $dto;
         }, $this->findTagsQuantityByUserId($userId)));
     }

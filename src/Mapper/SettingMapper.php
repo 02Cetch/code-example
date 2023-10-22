@@ -2,10 +2,10 @@
 
 namespace App\Mapper;
 
-use App\Dto\Response\Settings\BaseSettingDetails;
+use App\Dto\Response\Setting\BaseSettingDetails;
 use App\Entity\Admin\Setting;
 
-class SettingsMapper
+class SettingMapper
 {
     public static function map(Setting $setting, BaseSettingDetails $dto): void
     {

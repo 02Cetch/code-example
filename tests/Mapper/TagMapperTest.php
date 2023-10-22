@@ -4,12 +4,12 @@ namespace App\Tests\Mapper;
 
 use App\Dto\Response\Tag\TagsListItem;
 use App\Exception\Mapper\BadInputMapperException;
-use App\Mapper\TagsMapper;
+use App\Mapper\TagMapper;
 use App\Tests\AbstractTestCase;
 use Faker\Factory;
 use Faker\Generator;
 
-class TagsMapperTest extends AbstractTestCase
+class TagMapperTest extends AbstractTestCase
 {
     private Generator $faker;
 
@@ -30,7 +30,7 @@ class TagsMapperTest extends AbstractTestCase
             ->setQuantity($tagData['quantity']);
 
         $dto = new TagsListItem();
-        TagsMapper::map($tagData, $dto);
+        TagMapper::map($tagData, $dto);
 
         $this->assertEquals($expected, $dto);
     }
@@ -38,26 +38,26 @@ class TagsMapperTest extends AbstractTestCase
     public function testMapBadInputMissingTitleIndex()
     {
         $tagData = [
-            'title' => $this->faker->title()
+            'quantity' => $this->faker->randomNumber(),
         ];
         $dto = new TagsListItem();
 
         $this->expectException(BadInputMapperException::class);
         $this->expectExceptionMessage("Wrong tag data result");
 
-        TagsMapper::map($tagData, $dto);
+        TagMapper::map($tagData, $dto);
     }
 
     public function testMapBadInputMissingQuantityIndex()
     {
         $tagData = [
-            'quantity' => $this->faker->randomNumber()
+            'title' => $this->faker->title(),
         ];
         $dto = new TagsListItem();
 
         $this->expectException(BadInputMapperException::class);
         $this->expectExceptionMessage("Wrong tag data result");
 
-        TagsMapper::map($tagData, $dto);
+        TagMapper::map($tagData, $dto);
     }
 }

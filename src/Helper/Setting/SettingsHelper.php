@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helper\Settings;
+namespace App\Helper\Setting;
 
 use App\Entity\Admin\Setting;
 use App\Enum\SettingTypeName;
