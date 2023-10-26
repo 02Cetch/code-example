@@ -2,7 +2,7 @@
 
 namespace App\Controller\Page;
 
-use App\Facade\ArticleFacade;
+use App\Facade\BlogFacade;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ class TagController extends AbstractController
     }
 
     #[Route(path:'/{tagLink}', name: '_view')]
-    public function view(string $tagLink, ArticleFacade $facade): Response
+    public function view(string $tagLink, BlogFacade $facade): Response
     {
         $articlePaginationResponse = $facade->getPaginatedArticlesByTagLinkAndRequestStack(
             $tagLink,

@@ -22,7 +22,7 @@ class TagMapperTest extends AbstractTestCase
     {
         $tagData = [
             'title' => $this->faker->title(),
-            'quantity' => $this->faker->randomNumber(),
+            'quantity' => $this->faker->randomNumber('4'),
         ];
 
         $expected = (new TagsListItem())

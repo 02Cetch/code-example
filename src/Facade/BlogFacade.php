@@ -12,7 +12,7 @@ use Doctrine\DBAL\Exception;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ArticleFacade
+class BlogFacade
 {
     private const ARTICLES_PER_PAGE = 6;
 

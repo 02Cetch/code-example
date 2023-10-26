@@ -4,7 +4,7 @@ namespace App\Tests\Facade;
 
 use App\Dto\Response\Article\ArticlePaginationResponse;
 use App\Entity\Tag;
-use App\Facade\ArticleFacade;
+use App\Facade\BlogFacade;
 use App\Service\ArticleService;
 use App\Service\TagService;
 use App\Tests\AbstractTestCase;
@@ -14,7 +14,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class ArticleFacadeTest extends AbstractTestCase
+class BlogFacadeTest extends AbstractTestCase
 {
     private readonly ArticleService $articleService;
 
@@ -22,7 +22,7 @@ class ArticleFacadeTest extends AbstractTestCase
 
     private readonly PaginatorInterface $paginator;
 
-    private readonly ArticleFacade $facade;
+    private readonly BlogFacade $facade;
     private readonly RequestStack $request;
     private Generator $faker;
 
@@ -43,7 +43,7 @@ class ArticleFacadeTest extends AbstractTestCase
         $this->tagService = $this->createMock(TagService::class);
         $this->paginator = $this->createMock(PaginatorInterface::class);
 
-        $this->facade = new ArticleFacade(
+        $this->facade = new BlogFacade(
             $this->articleService,
             $this->tagService,
             $this->paginator

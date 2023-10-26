@@ -2,12 +2,13 @@
 
 namespace App\Controller\Page;
 
-use App\Exception\Repository\NotFoundRepositoryException;
-use App\Facade\ArticleFacade;
+use App\Dto\Request\Page\SearchViewRequest;
+use App\Facade\BlogFacade;
 use Doctrine\DBAL\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/search', name: 'search')]
@@ -15,7 +16,7 @@ class SearchController extends AbstractController
 {
     public function __construct(
         private readonly RequestStack $requestStack,
-        private readonly ArticleFacade $articleFacade
+        private readonly BlogFacade $blogFacade
     ) {
     }
 
@@ -23,10 +24,9 @@ class SearchController extends AbstractController
      * @throws Exception
      */
     #[Route(path: '/', name: '_view', methods: ['GET'])]
-    public function view(): Response
+    public function view(#[MapQueryString] SearchViewRequest $request): Response
     {
-        $searchQuery = $this->requestStack->getCurrentRequest()->get('query');
-        $articles = $this->articleFacade->getArticlesBySearchQuery($searchQuery);
+        $articles = $this->blogFacade->getArticlesBySearchQuery($request->getQuery());
 
         return $this->render('/pages/search.html.twig', [
             'page_title' => "{$this->getParameter('app.name')} | Поиск",
